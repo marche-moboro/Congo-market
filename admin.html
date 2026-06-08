@@ -477,12 +477,19 @@ async function searchSellers() {
 <td>${escapeHtml(s.full_name)}</td>
 <td>${escapeHtml(s.phone)}</td>
 <td>${escapeHtml(s.category)}</td>
-        <td>${s.is_blocked
-          ? '<span class="badge-red">Bloqué</span>'
-          : s.subscription_status === 'expire'
-            ? '<span class="badge-yellow">Expiré</span>'
-            : '<span class="badge-green">Actif</span>'
-        }</td>
+<td>
+  ${s.is_blocked
+    ? '<span class="badge-red">Bloqué</span>'
+    : s.subscription_status === 'expire'
+      ? '<span class="badge-yellow">Expiré</span>'
+      : '<span class="badge-green">Actif</span>'
+  }
+  <br><small style="color:#888;">
+    ${s.subscription_end
+      ? 'Exp: ' + new Date(s.subscription_end).toLocaleDateString('fr-FR')
+      : '—'}
+  </small>
+</td>
         <td>
           <button class="action-btn ${s.is_blocked ? 'unblock-btn' : 'block-btn'}"
             onclick="toggleBlock('${s.id}', ${s.is_blocked})">
@@ -498,12 +505,38 @@ async function toggleBlock(sellerId, isBlocked) {
   const action = isBlocked ? 'débloquer' : 'bloquer';
   if (!confirm(`Voulez-vous ${action} ce vendeur ?`)) return;
 
+  const today = new Date();
+  const endDate = new Date(today);
+  endDate.setDate(endDate.getDate() + 30);
+
+  const updateData = {
+    is_blocked: !isBlocked,
+    subscription_status: isBlocked ? 'en_cours' : 'expire'
+  };
+
+  if (isBlocked) {
+    updateData.subscription_start = today.toISOString().split('T')[0];
+    updateData.subscription_end   = endDate.toISOString().split('T')[0];
+  }
+
   const { error } = await db.from(TABLES.SELLERS)
-    .update({ is_blocked: !isBlocked }).eq('id', sellerId);
+    .update(updateData).eq('id', sellerId);
 
   if (error) { showToast('Erreur', 'error'); return; }
-  showToast(`Vendeur ${isBlocked ? 'débloqué' : 'bloqué'} ✓`, 'success');
-  await logAction(isBlocked ? 'Déblocage vendeur' : 'Blocage vendeur', sellerId, '', '');
+
+  showToast(
+    isBlocked
+      ? `Débloqué ✓ — Expire le ${endDate.toLocaleDateString('fr-FR')}`
+      : `Bloqué ✓`,
+    'success'
+  );
+
+  await logAction(
+    isBlocked ? 'Déblocage vendeur' : 'Blocage vendeur',
+    sellerId, '',
+    isBlocked ? `Abonnement jusqu'au ${endDate.toISOString().split('T')[0]}` : ''
+  );
+
   searchSellers();
 }
 

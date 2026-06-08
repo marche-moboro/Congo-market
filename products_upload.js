@@ -408,3 +408,34 @@ async function loadPromos(type) {
     </div>
   `).join('');
 }
+
+async function viewMyStats() {
+  if (!currentSeller) return;
+
+  const { data: views } = await db.from('product_views')
+    .select('*').eq('seller_id', currentSeller.id);
+
+  const totalViews  = views?.filter(v => v.type === 'view').length  || 0;
+  const totalClicks = views?.filter(v => v.type === 'click').length || 0;
+
+  const viewsByProduct = {};
+  views?.filter(v => v.type === 'view').forEach(v => {
+    viewsByProduct[v.product_id] = (viewsByProduct[v.product_id] || 0) + 1;
+  });
+
+  const topProductId = Object.entries(viewsByProduct)
+    .sort((a, b) => b[1] - a[1])[0]?.[0];
+
+  let topProductName = '—';
+  if (topProductId) {
+    const { data: prod } = await db.from('products')
+      .select('name').eq('id', topProductId).maybeSingle();
+    topProductName = prod?.name || '—';
+  }
+
+  document.getElementById('statTotalViews').innerText  = totalViews;
+  document.getElementById('statTotalClicks').innerText = totalClicks;
+  document.getElementById('statTopProduct').innerText  = topProductName;
+
+  showPage('myStatsPage');
+}

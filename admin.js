@@ -163,8 +163,24 @@ async function toggleBlock(sellerId, isBlocked) {
   const action = isBlocked ? 'débloquer' : 'bloquer';
   if (!confirm(`Voulez-vous ${action} ce vendeur ?`)) return;
 
+  // ✅ Si déblocage → mettre à jour les dates d'abonnement (30 jours)
+  const today = new Date();
+  const endDate = new Date(today);
+  endDate.setDate(endDate.getDate() + 30);
+
+  const updateData = {
+    is_blocked: !isBlocked,
+    subscription_status: isBlocked ? 'en_cours' : 'expire'
+  };
+
+  // ✅ Ajouter les dates seulement au déblocage
+  if (isBlocked) {
+    updateData.subscription_start = today.toISOString().split('T')[0];
+    updateData.subscription_end   = endDate.toISOString().split('T')[0];
+  }
+
   const { error } = await db.from(TABLES.SELLERS)
-    .update({ is_blocked: !isBlocked })
+    .update(updateData)
     .eq('id', sellerId);
 
   if (error) {
@@ -172,12 +188,21 @@ async function toggleBlock(sellerId, isBlocked) {
     return;
   }
 
-  showToast(`Vendeur ${isBlocked ? 'débloqué' : 'bloqué'}`, 'success');
+  showToast(
+    isBlocked
+      ? `Vendeur débloqué ✓ — Abonnement jusqu'au ${endDate.toLocaleDateString('fr-FR')}`
+      : `Vendeur bloqué ✓`,
+    'success'
+  );
+
   await logAdminAction(
     isBlocked ? 'unblock_seller' : 'block_seller',
     'sellers', sellerId,
-    `Vendeur ${isBlocked ? 'débloqué' : 'bloqué'} par admin`
+    isBlocked
+      ? `Débloqué — abonnement jusqu'au ${endDate.toISOString().split('T')[0]}`
+      : 'Bloqué par admin'
   );
+
   loadSellersList();
 }
 

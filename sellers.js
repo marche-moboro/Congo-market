@@ -139,6 +139,10 @@ async function openSellerProducts(sellerId, type) {
 
     renderProducts(products || [], type);
 
+products?.forEach(p => {
+  recordProductView(p.id, sellerId, 'view');
+});
+
     if (type === 'B') {
       document.getElementById('cartBar').style.display = 'flex';
       loadCart(sellerId);
@@ -213,4 +217,16 @@ function goHome() {
 
 function goBack() {
   history.back();
+}
+
+async function recordProductView(productId, sellerId, type = 'view') {
+  try {
+    await db.from('product_views').insert({
+      product_id: productId,
+      seller_id:  sellerId,
+      type:       type
+    });
+  } catch (e) {
+    console.error('recordProductView error:', e);
+  }
 }

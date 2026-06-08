@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marché Moboro - Le meilleur marché local</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1677FF">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Moboro">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <style>/* ==================== RESET & BASE ==================== */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
@@ -844,17 +851,17 @@ header p { font-size: 12px; opacity: .80; }
     </div>
     <div class="form-card">
       <div class="info-box">
-        <strong>Bienvenue. Lancez votre activité en toute confiance et en toute sécurité</strong><br><br>
+        <strong>Bienvenue dans votre marché. Lancez votre activité en toute confiance et en toute sécurité</strong><br><br>
         Créez votre espace vendeur gratuitement et gardez 100% de vos ventes.<br>
-        Nous ne prenons <strong>aucune commission</strong> sur vos transactions.
+        Nous ne prenons <strong>aucune commission</strong> sur vos ventes.
       </div>
       <div class="terms-content">
-        <h3>📋 Conditions du Marché Moboro</h3>
-        <p>En vous inscrivant sur Marché Moboro, vous acceptez les conditions suivantes :</p>
+        <h3>📋 Conditions du Marché</h3>
+        <p>En vous inscrivant sur Marché, vous acceptez les conditions suivantes :</p>
         <h3>1. Inscription gratuite</h3>
         <p>L'inscription est 100% gratuite. Aucun frais ne vous sera demandé lors de la création de votre compte.</p>
         <h3>2. Frais d'abonnement</h3>
-        <p>Après la période promotionnelle, des frais de <strong>500 FCFA/semaine</strong> ou <strong>1 750 FCFA/mois</strong> s'appliquent pour maintenir votre espace actif. Vous serez informé avant tout prélèvement.</p>
+        <p>Après la période promotionnelle, des frais à la hauteur de <strong>1 750 FCFA/mois</strong> s'appliquent pour maintenir votre espace actif. Votre compte sera automatiquement bloquer si non payer</p>
         <h3>3. Sans engagement</h3>
         <p>Vous pouvez arrêter votre abonnement à tout moment sans pénalité.</p>
         <h3>4. Publications</h3>
@@ -965,7 +972,7 @@ header p { font-size: 12px; opacity: .80; }
       </div>
       <div class="info-box">
         💡 <strong>Conseil :</strong> Publiez 3 produits ou plus par jour pour augmenter votre visibilité et monter en position.<br><br>
-        📌 <strong>À noter :</strong> Après la période promotionnelle, les frais sont de 500 FCFA/semaine ou 1 750 FCFA/mois.<br><br>
+        📌 <strong>À noter :</strong> Après la période promotionnelle, les frais sont de 1 750 FCFA/mois.<br><br>
         Notre équipe reste disponible si vous avez besoin d'aide.<br><br>
       </div>
       <button class="primary-btn" onclick="goHome()">Retour à l'accueil et se connecter</button>
@@ -1019,6 +1026,16 @@ header p { font-size: 12px; opacity: .80; }
       <button class="dash-btn" onclick="viewMyPromos()">
         <span class="icon">💥</span>Mes promos
       </button>
+      <button class="dash-btn" onclick="viewMyStats()">
+        <span class="icon">📊</span>Mes statistiques
+      </button>
+      <!-- Alerte abonnement -->
+      <div id="subscriptionAlert"
+        style="display:none;background:#fff4d9;border:1px solid #ffd666;
+               padding:14px;border-radius:14px;margin-bottom:2px;
+               font-size:14px;line-height:1.6;text-align:center;
+               grid-column:1/3;">
+      </div>
       <button class="dash-btn full" onclick="openProfile()">
         <span class="icon">👤</span>Mon profil & informations
       </button>
@@ -1151,6 +1168,33 @@ header p { font-size: 12px; opacity: .80; }
   </div>
 </div>
 
+<div class="page" id="myStatsPage">
+  <div style="padding:15px;">
+    <div class="page-header">
+      <button class="back-btn" onclick="openSellerDashboard()">←</button>
+      <div>
+        <div class="section-title">Mes statistiques</div>
+      </div>
+    </div>
+    <div class="form-card">
+      <h2>📊 Performance de mes produits</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="statTotalViews">0</div>
+          <div class="stat-label">👁️ Vues totales</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statTotalClicks">0</div>
+          <div class="stat-label">👆 Clics WhatsApp</div>
+        </div>
+      </div>
+      <div class="success-box" style="margin-top:14px;">
+        🏆 Produit le plus vu :<br>
+        <strong id="statTopProduct">—</strong>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- ========== MY PROMOS PAGE ========== -->
 <div class="page" id="myPromosPage">
   <div class="register-page">
@@ -1319,15 +1363,6 @@ header p { font-size: 12px; opacity: .80; }
       💳 <strong>Choisissez votre abonnement,
       payez et envoyez l'identifiant de la transaction ou la capture d'écran à l'administration.</strong>
     </div>
-
-<!-- Bouton 500 FCFA / semaine -->
-<a href="tel:*105*6*535182*500%23"
-   style="display:flex;align-items:center;justify-content:center;gap:10px;
-          background:linear-gradient(135deg,#1677FF,#0d5bd1);
-          color:white;padding:15px;border-radius:14px;
-          font-weight:700;font-size:16px;text-decoration:none;margin-bottom:10px;">
-  📆 500FCFA/Semaine
-</a>
 
 <!-- Bouton 1750 FCFA / mois -->
 <a href="tel:*105*6*535182*1750%23"
@@ -1989,7 +2024,7 @@ async function openSellerDashboard() {
 
   // Rafraîchir données vendeur
   const { data: seller } = await db.from(TABLES.SELLERS)
-    .select('*').eq('id', currentSeller.id).single();
+    .select('*').eq('id', currentSeller.id).maybeSingle();
   if (seller) currentSeller = seller;
 
   document.getElementById('dashSellerName').innerText = currentSeller.full_name;
@@ -1999,6 +2034,31 @@ async function openSellerDashboard() {
 
   if (currentSeller.photo) {
     document.getElementById('dashPhoto').src = currentSeller.photo;
+  }
+
+  // ✅ Décompte abonnement — alerte 7 derniers jours
+  const alertEl = document.getElementById('subscriptionAlert');
+  if (alertEl && currentSeller.subscription_end) {
+    const today    = new Date();
+    const endDate  = new Date(currentSeller.subscription_end);
+    const daysLeft = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+
+    if (daysLeft <= 7 && daysLeft > 0) {
+      alertEl.style.display = 'block';
+      alertEl.innerHTML = `
+        ⚠️ Votre abonnement expire dans
+        <strong>${daysLeft} jour${daysLeft > 1 ? 's' : ''}</strong>
+        <br>
+        <a href="tel:*105*6*535182*1750%23"
+           style="display:inline-block;margin-top:8px;background:#1677FF;
+                  color:white;padding:8px 14px;border-radius:10px;
+                  text-decoration:none;font-weight:700;font-size:13px;">
+          📆 Renouveler — 1 750 FCFA
+        </a>
+      `;
+    } else {
+      alertEl.style.display = 'none';
+    }
   }
 
   showPage('dashboardPage');
@@ -3284,7 +3344,17 @@ function openAdmin() {
   showPage('adminLoginPage');
 }
 
+</script>
 
+<!-- Service Worker PWA -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/Congo-market/service-worker.js')
+        .then(() => console.log('SW enregistré ✓'))
+        .catch(err => console.error('SW erreur:', err));
+    });
+  }
 </script>
 
 </body>
