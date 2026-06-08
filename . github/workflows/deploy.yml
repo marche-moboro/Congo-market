@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  clean-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Supprimer fichiers inutiles
+        run: |
+          rm -f migrate_to_imagekit.js
+          rm -f index__*.html
+          rm -f admin__*.html
+          rm -f deploy.yml.txt
+
+      - name: Commit nettoyage
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "Nettoyage automatique"
+          git push
