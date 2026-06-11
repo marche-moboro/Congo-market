@@ -266,11 +266,104 @@ async function moveUp(sellerId, catId) {
   loadPositions(catId);
 }
 
+
 // ================================================================
-// DESCENDRE POSITION
-// ✅ CORRECTION 2 : Promise.all atomique — même correction que moveUp
+// GESTION COMPTES VIP (ADMIN)
 // ================================================================
-async function moveDown(sellerId, catId) {
+
+function openCreateVIPAccount() {
+  showPage('adminCreateVIPPage');
+}
+
+function openLoginVIPAccount() {
+  showPage('loginPage');
+  document.getElementById('loginPage').querySelector('.section-title').innerText = 'Connexion compte VIP';
+}
+
+async function createVIPAccount() {
+  const fullName    = document.getElementById('vipFullName')?.value.trim();
+  const phone       = document.getElementById('vipPhone')?.value.trim();
+  const quartier    = document.getElementById('vipQuartier')?.value.trim();
+  const address     = document.getElementById('vipAddress')?.value.trim();
+  const ville       = document.getElementById('vipVille')?.value.trim();
+  const category    = document.getElementById('vipCategory')?.value;
+  const description = document.getElementById('vipDescription')?.value.trim();
+  const pin         = document.getElementById('vipPin')?.value.trim();
+  const accountType = document.getElementById('vipType')?.value || 'vip_vendeur';
+
+  if (!fullName || !phone || !quartier || !address || !ville || !category || !description || !pin) {
+    showToast('Remplissez tous les champs', 'error');
+    return;
+  }
+
+  const { data: existing } = await db.from(TABLES.SELLERS)
+    .select('id').eq('phone', phone).maybeSingle();
+  if (existing) { showToast('Ce numéro a déjà un compte.', 'error'); return; }
+
+  try {
+    const { count } = await db.from(TABLES.SELLERS).select('*', { count: 'exact', head: true });
+    const sellerCode = generateSellerCode(count || 0);
+
+    const { data: created, error } = await db.from(TABLES.SELLERS).insert({
+      code:                sellerCode,
+      full_name:           fullName,
+      phone:               phone,
+      quartier:            quartier,
+      address:             address,
+      ville:               ville,
+      category:            category,
+      description:         description,
+      pin_hash:            hashPin(pin),
+      photo:               '',
+      is_blocked:          false,
+      is_active:           true,
+      position:            0,
+      dynamisme_score:     0,
+      account_type:        accountType,
+      subscription_status: 'en_cours',
+      created_at:          new Date().toISOString()
+    }).select().single();
+
+    if (error || !created) { showToast('Erreur création VIP: ' + (error?.message || ''), 'error'); return; }
+
+    await logAdminAction('create_vip_account', 'sellers', created.id, `Compte VIP créé: ${sellerCode}`);
+    showToast(`✅ Compte VIP créé ! Code: ${sellerCode}`, 'success');
+
+    // Afficher le code dans une alert
+    alert(`✅ Compte VIP créé avec succès !\n\nCode vendeur : ${sellerCode}\nPIN : ${pin}\n\nCommuniquez ces informations au client.`);
+    showPage('adminDashboard');
+
+  } catch (e) {
+    showToast('Erreur: ' + e.message, 'error');
+  }
+}
+
+// Fonctions utilitaires manquantes dans admin.js
+function deleteSellerAccount() {
+  const code = document.getElementById('deleteSellerCode')?.value?.trim()?.toUpperCase();
+  if (!code) { showToast('Entrez un code vendeur', 'error'); return; }
+  showConfirmDialog(`Supprimer définitivement le compte ${code} ?`, async () => {
+    const { data: seller } = await db.from(TABLES.SELLERS).select('id').eq('code', code).maybeSingle();
+    if (!seller) { showToast('Compte introuvable', 'error'); return; }
+    await db.from(TABLES.PRODUCTS).delete().eq('seller_id', seller.id);
+    await db.from(TABLES.PROMOS).delete().eq('seller_id', seller.id);
+    const { error } = await db.from(TABLES.SELLERS).delete().eq('id', seller.id);
+    if (error) { showToast('Erreur suppression', 'error'); return; }
+    await logAdminAction('delete_seller', 'sellers', seller.id, `Compte ${code} supprimé`);
+    showToast('Compte supprimé ✓', 'success');
+    document.getElementById('deleteSellerCode').value = '';
+  });
+}
+
+async function logAdminAction(action, table, recordId, details) {
+  try {
+    await db.from('admin_logs').insert({
+      action, table_name: table, record_id: recordId, details,
+      created_at: new Date().toISOString()
+    });
+  } catch (e) {}
+}
+
   const { data: sellers } = await db.from(TABLES.SELLERS)
     .select('id, position').eq('category', catId).order('position');
 
@@ -292,4 +385,5 @@ async function moveDown(sellerId, catId) {
 
   await logAdminAction('move_position', 'sellers', sellerId, `Position descendue — catégorie ${catId}`);
   loadPositions(catId);
-}
+
+

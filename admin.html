@@ -92,6 +92,9 @@
     <div class="nav-tab active" onclick="switchTab('stats', event)">📊 Stats</div>
     <div class="nav-tab" onclick="switchTab('sellers', event)">👥 Vendeurs</div>
     <div class="nav-tab" onclick="switchTab('positions', event)">📋 Positions</div>
+    <div class="nav-tab" onclick="switchTab('vip', event)">👑 VIP</div>
+    <div class="nav-tab" onclick="switchTab('livreurs', event)">🚚 Livreurs</div>
+    <div class="nav-tab" onclick="switchTab('badges', event)">🏅 Badges</div>
     <div class="nav-tab" onclick="switchTab('actions', event)">⚙️ Actions</div>
     <div class="nav-tab" onclick="switchTab('logs', event)">📝 Logs</div>
   </div>
@@ -216,6 +219,122 @@
       </div>
 
     </div>  <!-- ✅ Fermeture tab-actions ICI -->
+
+    <!-- VIP -->
+    <div class="tab-panel" id="tab-vip">
+
+      <!-- Créer compte VIP -->
+      <div class="form-card">
+        <h2>👑 Créer un compte VIP</h2>
+        <select id="vipType">
+          <option value="vip_grossiste">🏭 Importateur &amp; Grossiste VIP — 10 000 FCFA/mois</option>
+          <option value="vip_vendeur">🛍️ Vendeur VIP — 5 000 FCFA/mois</option>
+        </select>
+        <input type="text" id="vipFullName" placeholder="Nom complet *">
+        <input type="tel" id="vipPhone" placeholder="Téléphone *">
+        <input type="text" id="vipQuartier" placeholder="Quartier *">
+        <input type="text" id="vipAddress" placeholder="Adresse *">
+        <select id="vipVille" style="width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #e8e8e8;margin-bottom:10px;font-size:14px;outline:none;background:#fafafa;">
+        <option value="">Choisir la ville *</option>
+        <option value="Brazzaville">Brazzaville</option>
+        <option value="Pointe-Noire">Pointe-Noire</option>
+        <option value="Dolisie">Dolisie</option>
+        <option value="Nkayi">Nkayi</option>
+        <option value="Oyo">Oyo</option>
+        <option value="Bétou">Bétou</option>
+        <option value="Ouesso">Ouesso</option>
+        <option value="Impfondo">Impfondo</option>
+        <option value="Madingou">Madingou</option>
+        <option value="Owando">Owando</option>
+        <option value="Sibiti">Sibiti</option>
+        <option value="Mossaka">Mossaka</option>
+        <option value="Gamboma">Gamboma</option>
+        <option value="Djambala">Djambala</option>
+        <option value="Makoua">Makoua</option>
+        <option value="Kinkala">Kinkala</option>
+        <option value="Ewo">Ewo</option>
+        <option value="Dongou">Dongou</option>
+      </select>
+        <select id="vipCategory">
+          <option value="">Choisir la catégorie *</option>
+          <optgroup label="Catégorie A — Importateurs &amp; Grossistes">
+            <option value="ig">Importateurs &amp; Grossistes</option>
+            <option value="immo">Immobilier</option>
+            <option value="coiffure">Grand Salon de Coiffure</option>
+            <option value="hotel">Hôtel, Jardin &amp; Tourisme</option>
+            <option value="deco-mariage">Décoration Mariage</option>
+            <option value="menage">Service de Ménage</option>
+            <option value="demenagement">Déménagement</option>
+            <option value="auto">Automobile &amp; Dépannage</option>
+            <option value="couture">Couture &amp; Styliste</option>
+            <option value="pharmacie">Pharmacie</option>
+            <option value="construction">Matériaux de Construction</option>
+            <option value="alimentation">Alimentation</option>
+          </optgroup>
+          <optgroup label="Catégorie B — Boutiques &amp; Vendeurs">
+            <option value="c1">Chaussures &amp; Basket</option>
+            <option value="c2">Accessoires Téléphone</option>
+            <option value="c3">Beauté &amp; Cosmétiques</option>
+            <option value="c4">Vêtements Femme</option>
+            <option value="c5">Chaussures Femme</option>
+            <option value="c6">Sacs &amp; Mode</option>
+            <option value="c7">Maison &amp; Décoration</option>
+            <option value="c8">Savon Artisanal</option>
+            <option value="c9">Parfums &amp; Soins</option>
+            <option value="c10">Bébé &amp; Enfants</option>
+            <option value="c11">Perruques &amp; Mèches</option>
+            <option value="c12">Lingerie &amp; Rideau</option>
+            <option value="c13">Santé &amp; Bien-être</option>
+            <option value="c14">Friperie</option>
+            <option value="c15">Tissus &amp; Pagnes</option>
+            <option value="c16">Occasion d'Europe</option>
+            <option value="c17">Pâtisserie</option>
+            <option value="c18">Veste &amp; Chaussures Luxe</option>
+            <option value="c19">Plastique</option>
+            <option value="c20">Électronique</option>
+            <option value="c21">Grossiste Œufs</option>
+            <option value="c22">Anniversaire &amp; Jetable</option>
+          </optgroup>
+        </select>
+        <textarea id="vipDescription" placeholder="Description de l'activité *" style="min-height:80px;"></textarea>
+        <input type="password" id="vipPin" placeholder="PIN du compte (4-6 chiffres) *" maxlength="6">
+        <p style="font-size:12px;color:#888;margin-bottom:10px;">⚠️ Notez le code vendeur généré et le PIN — vous devez les communiquer au client.</p>
+        <button class="btn-primary" style="background:#722ed1;" onclick="adminCreateVIP()">👑 Créer le compte VIP</button>
+        <div id="vipCreateResult" style="display:none;margin-top:12px;background:#f9f0ff;border:1px solid #d3adf7;padding:14px;border-radius:12px;font-size:14px;line-height:1.8;"></div>
+      </div>
+
+      <!-- Liste comptes VIP -->
+      <div class="form-card">
+        <h2>📋 Comptes VIP existants</h2>
+        <button class="btn-primary" onclick="loadVIPAccounts()">🔄 Charger les comptes VIP</button>
+        <div id="vipList" style="margin-top:12px;"></div>
+      </div>
+    </div>
+
+    <!-- LIVREURS -->
+    <div class="tab-panel" id="tab-livreurs">
+      <div class="form-card">
+        <h2>🚚 Agents de livraison inscrits</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <input type="text" id="livreurVilleFilter" placeholder="Filtrer par ville" style="margin-bottom:0;">
+          <button class="btn-primary" onclick="loadLivreurs()" style="margin:0;">Rechercher</button>
+        </div>
+        <div id="livreursResults"></div>
+      </div>
+    </div>
+
+    <!-- BADGES -->
+    <div class="tab-panel" id="tab-badges">
+      <div class="form-card">
+        <h2>🏅 Gestion des badges</h2>
+        <p style="font-size:13px;color:#888;margin-bottom:14px;">
+          Attribuez ou retirez les badges manuellement.<br>
+          🥈 Argent = 7 étoiles &nbsp;|&nbsp; 🥉 Bronze = 20 étoiles &nbsp;|&nbsp; 🥇 Or = 50 étoiles
+        </p>
+        <button class="btn-primary" onclick="loadSellersForBadge()">🔄 Charger tous les comptes</button>
+        <div id="badgeSellerList" style="margin-top:14px;"></div>
+      </div>
+    </div>
 
     <!-- LOGS -->
     <div class="tab-panel" id="tab-logs">
@@ -709,6 +828,220 @@ async function logAction(action, targetCode, targetName, details) {
 // ================================================================
 
 // Charger les slides actuels depuis Supabase
+// ================================================================
+// GESTION COMPTES VIP — admin.html (code séparé de index.html)
+// ================================================================
+
+function generateAdminVIPCode(count) {
+  const number = String(count + 1).padStart(4, '0');
+  return 'VIP' + number + 'M';
+}
+
+async function adminCreateVIP() {
+  const type        = document.getElementById('vipType').value;
+  const fullName    = document.getElementById('vipFullName').value.trim();
+  const phone       = document.getElementById('vipPhone').value.trim();
+  const quartier    = document.getElementById('vipQuartier').value.trim();
+  const address     = document.getElementById('vipAddress').value.trim();
+  const ville       = document.getElementById('vipVille').value.trim();
+  const category    = document.getElementById('vipCategory').value;
+  const description = document.getElementById('vipDescription').value.trim();
+  const pin         = document.getElementById('vipPin').value.trim();
+
+  if (!fullName || !phone || !quartier || !address || !ville || !category || !description || !pin) {
+    showToast('Remplissez tous les champs', 'error'); return;
+  }
+  if (pin.length < 4) { showToast('PIN minimum 4 chiffres', 'error'); return; }
+
+  const { data: existing } = await db.from(TABLES.SELLERS)
+    .select('id').eq('phone', phone).maybeSingle();
+  if (existing) { showToast('Ce numéro a déjà un compte', 'error'); return; }
+
+  try {
+    const { count } = await db.from(TABLES.SELLERS)
+      .select('*', { count: 'exact', head: true });
+
+    const sellerCode = 'MBR' + String((count||0)+1).padStart(4,'0') +
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(Math.random()*26)];
+
+    const { data: created, error } = await db.from(TABLES.SELLERS).insert({
+      code:                sellerCode,
+      full_name:           fullName,
+      phone:               phone,
+      quartier:            quartier,
+      address:             address,
+      ville:               ville,
+      category:            category,
+      description:         description,
+      pin_hash:            btoa(pin + '_mbr_salt_2024'),
+      photo:               '',
+      is_blocked:          false,
+      is_active:           true,
+      position:            0,
+      account_type:        type,
+      subscription_status: 'en_cours',
+      created_at:          new Date().toISOString()
+    }).select().single();
+
+    if (error || !created) {
+      showToast('Erreur création: ' + (error?.message || ''), 'error'); return;
+    }
+
+    await logAction('Création compte VIP', sellerCode, fullName,
+      `Type: ${type} | Catégorie: ${category}`);
+
+    // Email admin via Edge Function Supabase → Brevo
+    try {
+      await fetch(
+        'https://frvzrorqndozglxczatv.supabase.co/functions/v1/bright-service',
+        {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ seller: created })
+        }
+      );
+    } catch(e) { console.warn('Email non envoyé:', e); }
+
+    const resultDiv = document.getElementById('vipCreateResult');
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = `
+      ✅ <strong>Compte VIP créé avec succès !</strong><br><br>
+      👤 <strong>Nom :</strong> ${escapeHtml(fullName)}<br>
+      📱 <strong>Code vendeur :</strong> <span style="color:#722ed1;font-size:16px;font-weight:700;letter-spacing:2px;">${sellerCode}</span><br>
+      🔒 <strong>PIN :</strong> ${pin}<br>
+      🏷️ <strong>Type :</strong> ${type === 'vip_grossiste' ? 'Importateur & Grossiste VIP' : 'Vendeur VIP'}<br><br>
+      <span style="color:#ff4d4f;font-size:12px;">⚠️ Communiquez ces informations au client maintenant.</span>
+    `;
+
+    showToast(`Compte VIP ${sellerCode} créé ✓`, 'success');
+
+    // Vider le formulaire
+    ['vipFullName','vipPhone','vipQuartier','vipAddress','vipVille','vipDescription','vipPin']
+      .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+    document.getElementById('vipCategory').value = '';
+
+  } catch(e) {
+    showToast('Erreur: ' + e.message, 'error');
+  }
+}
+
+async function loadVIPAccounts() {
+  const div = document.getElementById('vipList');
+  div.innerHTML = '<p style="color:#888;font-size:13px;">Chargement...</p>';
+
+  const { data: sellers } = await db.from(TABLES.SELLERS)
+    .select('*')
+    .or('account_type.eq.vip_vendeur,account_type.eq.vip_grossiste')
+    .order('created_at', { ascending: false });
+
+  if (!sellers || sellers.length === 0) {
+    div.innerHTML = '<p style="color:#888;font-size:13px;padding:12px;">Aucun compte VIP.</p>';
+    return;
+  }
+
+  div.innerHTML = `<div class="table-wrap"><table>
+    <tr>
+      <th>Code</th><th>Nom</th><th>Type</th><th>Catégorie</th><th>Statut</th><th>Action</th>
+    </tr>
+    ${sellers.map(s => `
+      <tr>
+        <td><strong style="color:#722ed1;">${escapeHtml(s.code)}</strong></td>
+        <td>${escapeHtml(s.full_name)}<br><small style="color:#888;">${escapeHtml(s.phone)}</small></td>
+        <td><span style="font-size:11px;background:#f9f0ff;color:#722ed1;padding:3px 7px;border-radius:6px;font-weight:700;">
+          ${s.account_type === 'vip_grossiste' ? '🏭 Grossiste VIP' : '🛍️ Vendeur VIP'}
+        </span></td>
+        <td style="font-size:12px;">${escapeHtml(s.category)}</td>
+        <td>
+          ${s.is_blocked
+            ? '<span class="badge-red">Bloqué</span>'
+            : '<span class="badge-green">Actif</span>'}
+        </td>
+        <td>
+          <button class="action-btn ${s.is_blocked ? 'unblock-btn' : 'block-btn'}"
+            onclick="toggleBlock('${s.id}', ${s.is_blocked})">
+            ${s.is_blocked ? 'Débloquer' : 'Bloquer'}
+          </button>
+        </td>
+      </tr>
+    `).join('')}
+  </table></div>`;
+}
+
+// ================================================================
+// GESTION LIVREURS — admin.html
+// ================================================================
+
+async function loadLivreurs() {
+  const ville = document.getElementById('livreurVilleFilter').value.trim();
+  const div   = document.getElementById('livreursResults');
+  div.innerHTML = '<p style="color:#888;font-size:13px;">Chargement...</p>';
+
+  let query = db.from('delivery_agents').select('*').order('created_at', { ascending: false });
+  if (ville) query = query.ilike('ville', `%${ville}%`);
+
+  const { data: agents, error } = await query;
+
+  if (error || !agents || agents.length === 0) {
+    div.innerHTML = '<p style="color:#888;font-size:13px;padding:12px;">Aucun agent livreur trouvé.</p>';
+    return;
+  }
+
+  div.innerHTML = `<div class="table-wrap"><table>
+    <tr>
+      <th>Nom</th><th>Téléphone</th><th>Ville</th><th>Quartiers</th><th>Moyen</th><th>Statut</th><th>Action</th>
+    </tr>
+    ${agents.map(a => `
+      <tr>
+        <td>${escapeHtml(a.full_name)}</td>
+        <td>${escapeHtml(a.phone)}</td>
+        <td>${escapeHtml(a.ville)}</td>
+        <td style="font-size:12px;">${escapeHtml(a.quartier)}</td>
+        <td>${escapeHtml(a.moyen||'')}</td>
+        <td>
+          ${a.is_blocked
+            ? '<span class="badge-red">Bloqué</span>'
+            : a.subscription_status === 'expire'
+              ? '<span class="badge-yellow">Expiré</span>'
+              : '<span class="badge-green">Actif</span>'}
+        </td>
+        <td style="display:flex;gap:4px;flex-wrap:wrap;">
+          <button class="action-btn ${a.is_blocked ? 'unblock-btn' : 'block-btn'}"
+            onclick="toggleLivreur('${a.id}', ${a.is_blocked})">
+            ${a.is_blocked ? 'Débloquer' : 'Bloquer'}
+          </button>
+          <button class="action-btn block-btn"
+            onclick="deleteLivreur('${a.id}', '${escapeHtml(a.full_name)}')">
+            🗑
+          </button>
+        </td>
+      </tr>
+    `).join('')}
+  </table></div>`;
+}
+
+async function toggleLivreur(id, isBlocked) {
+  if (!confirm(`${isBlocked ? 'Débloquer' : 'Bloquer'} ce livreur ?`)) return;
+  const { error } = await db.from('delivery_agents')
+    .update({ is_blocked: !isBlocked }).eq('id', id);
+  if (error) { showToast('Erreur', 'error'); return; }
+  showToast(isBlocked ? 'Livreur débloqué ✓' : 'Livreur bloqué ✓', 'success');
+  loadLivreurs();
+}
+
+async function deleteLivreur(id, name) {
+  if (!confirm(`Supprimer définitivement ${name} ?`)) return;
+  const { error } = await db.from('delivery_agents').delete().eq('id', id);
+  if (error) { showToast('Erreur suppression', 'error'); return; }
+  await logAction('Suppression livreur', id, name, 'Compte livreur supprimé');
+  showToast('Livreur supprimé ✓', 'success');
+  loadLivreurs();
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 async function loadBannerSlides() {
   const { data: slides, error } = await db
     .from('banner_slides')
@@ -737,6 +1070,64 @@ async function loadBannerSlides() {
   });
 
   showToast('Slides chargés ✓', 'success');
+}
+
+// ================================================================
+// GESTION BADGES — ADMIN UNIQUEMENT (argent / bronze / or en 1 clic)
+// ================================================================
+async function loadSellersForBadge() {
+  const div = document.getElementById('badgeSellerList');
+  if (!div) return;
+  div.innerHTML = '<p style="color:#888;font-size:13px;">Chargement...</p>';
+
+  const { data: sellers  } = await db.from(TABLES.SELLERS)
+    .select('id,code,full_name,stars,badge,account_type')
+    .eq('is_blocked', false).order('stars', { ascending: false });
+
+  const { data: livreurs } = await db.from('delivery_agents')
+    .select('id,full_name,stars,badge')
+    .eq('is_blocked', false).order('stars', { ascending: false });
+
+  const all = [
+    ...(sellers  || []).map(s => ({ ...s, entityType: 'seller',  label: `${s.full_name} (${s.code})` })),
+    ...(livreurs || []).map(l => ({ ...l, entityType: 'livreur', label: `${l.full_name} (Livreur)` }))
+  ];
+
+  if (!all.length) { div.innerHTML = '<p style="color:#888;padding:12px;">Aucun compte.</p>'; return; }
+
+  const bi = { silver: { e:'🥈', l:'Argent', c:'#a0aec0' }, bronze: { e:'🥉', l:'Bronze', c:'#c07b3a' }, gold: { e:'🥇', l:'Or', c:'#f6c90e' } };
+
+  div.innerHTML = all.map(e => {
+    const s = e.stars || 0;
+    const auto = s>=50?'gold':s>=20?'bronze':s>=7?'silver':null;
+    const cur  = e.badge || auto;
+    const bHtml = cur ? `<span style="background:${bi[cur].c}30;color:${bi[cur].c};border:1px solid ${bi[cur].c};padding:2px 7px;border-radius:20px;font-size:11px;font-weight:700;">${bi[cur].e} ${bi[cur].l}</span>` : '<span style="color:#ccc;font-size:11px;">Aucun badge</span>';
+    return `<div style="background:white;border-radius:12px;padding:12px;margin-bottom:8px;box-shadow:0 1px 6px rgba(0,0,0,.07);">
+      <div style="font-weight:700;font-size:13px;margin-bottom:4px;">${escapeHtml(e.label)}</div>
+      <div style="font-size:12px;color:#888;margin-bottom:8px;">⭐ ${s} étoile${s>1?'s':''} &nbsp; ${bHtml}</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">
+        <button onclick="adminGiveBadge('${e.id}','${e.entityType}','silver')" style="background:#a0aec0;color:white;border:none;padding:7px 2px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;">🥈 Argent</button>
+        <button onclick="adminGiveBadge('${e.id}','${e.entityType}','bronze')" style="background:#c07b3a;color:white;border:none;padding:7px 2px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;">🥉 Bronze</button>
+        <button onclick="adminGiveBadge('${e.id}','${e.entityType}','gold')"   style="background:#f6c90e;color:#333;border:none;padding:7px 2px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;">🥇 Or</button>
+        <button onclick="adminRemoveBadge('${e.id}','${e.entityType}')"        style="background:#f5f5f5;color:#666;border:1px solid #ddd;padding:7px 2px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;">✕ Retirer</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function adminGiveBadge(id, entityType, badge) {
+  const table = entityType === 'livreur' ? 'delivery_agents' : TABLES.SELLERS;
+  const { error } = await db.from(table).update({ badge }).eq('id', id);
+  if (error) { showToast('Erreur badge', 'error'); return; }
+  showToast(`Badge ${badge} attribué ✓`, 'success');
+  loadSellersForBadge();
+}
+
+async function adminRemoveBadge(id, entityType) {
+  const table = entityType === 'livreur' ? 'delivery_agents' : TABLES.SELLERS;
+  await db.from(table).update({ badge: null }).eq('id', id);
+  showToast('Badge retiré ✓', 'success');
+  loadSellersForBadge();
 }
 
 </script>

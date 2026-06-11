@@ -8,23 +8,33 @@ let searchTimeout = null;
 function handleSearch() {
   clearTimeout(searchTimeout);
   const query = document.getElementById('searchInput').value.trim();
+  const ville = document.getElementById('searchVilleFilter')?.value || '';
 
-  if (query.length < 2) {
+  // Si filtre ville seul (sans texte)
+  if (!query && ville) {
+    searchTimeout = setTimeout(() => performSearch('', ville), 300);
+    return;
+  }
+
+  if (query.length < 2 && !ville) {
     if (document.getElementById('searchResultsPage').style.display === 'block') {
       showPage('homePage');
     }
     return;
   }
 
-  searchTimeout = setTimeout(() => performSearch(query), 400);
+  if (query.length >= 2 || ville) {
+    searchTimeout = setTimeout(() => performSearch(query, ville), 400);
+  }
 }
 
 // ================================================================
 // Effectuer la recherche
 // ================================================================
-async function performSearch(query) {
+async function performSearch(query, villeFilter = '') {
   showPage('searchResultsPage');
-  document.getElementById('searchResultsTitle').innerText = `Résultats pour "${query}"`;
+  const displayQuery = query || villeFilter;
+  document.getElementById('searchResultsTitle').innerText = `Résultats pour "${displayQuery}"`;
   document.getElementById('searchResults').innerHTML =
     '<div class="loading">Recherche en cours...</div>';
 
@@ -87,6 +97,20 @@ async function performSearch(query) {
       return;
     }
 
+    // --- Si seulement filtre ville (pas de texte) ---
+    if (!q && villeFilter) {
+      const { data: sellersByVille } = await db.from(TABLES.SELLERS)
+        .select('*')
+        .ilike('ville', `%${villeFilter}%`)
+        .eq('is_blocked', false)
+        .eq('is_active', true)
+        .order('position', { ascending: true });
+
+      results.sellers = sellersByVille || [];
+      renderSearchResults(results, `Tous les vendeurs à ${villeFilter}`);
+      return;
+    }
+
     // 2. Quartier + catégorie (ex: "moungali basket")
     let detectedCat      = null;
     let detectedQuartier = null;
@@ -100,44 +124,48 @@ async function performSearch(query) {
     }
 
     if (detectedCat && detectedQuartier) {
-      const { data: sellers, error } = await db.from(TABLES.SELLERS)
+      let query2 = db.from(TABLES.SELLERS)
         .select('*')
-        .eq('category',    detectedCat)
+        .eq('category',   detectedCat)
         .ilike('quartier', `%${detectedQuartier}%`)
-        .eq('is_blocked',  false)
-        .eq('is_active',   true);
+        .eq('is_blocked', false)
+        .eq('is_active',  true);
+      if (villeFilter) query2 = query2.ilike('ville', `%${villeFilter}%`);
 
+      const { data: sellers, error } = await query2;
       if (error) console.error('search cat+quartier error:', JSON.stringify(error));
 
       results.sellers = sellers || [];
-      renderSearchResults(
-        results,
-        `Vendeurs de ${ALL_CATEGORIES[detectedCat]} à ${detectedQuartier}`
-      );
+      const villeLabel = villeFilter ? ` à ${villeFilter}` : ` à ${detectedQuartier}`;
+      renderSearchResults(results, `Vendeurs de ${ALL_CATEGORIES[detectedCat]}${villeLabel}`);
       return;
     }
 
-    // 3. Recherches parallèles
+    // 3. Recherches parallèles (texte + ville optionnelle)
+    function addVille(qb) {
+      return villeFilter ? qb.ilike('ville', `%${villeFilter}%`) : qb;
+    }
+
     const [
       { data: sellersByQuartier },
-      { data: sellersByVille    },
+      { data: sellersByVilleQ   },
       { data: sellersByName     },
       { data: productsByName    }
     ] = await Promise.all([
-      db.from(TABLES.SELLERS).select('*')
-        .ilike('quartier',  `%${q}%`)
+      addVille(db.from(TABLES.SELLERS).select('*')
+        .ilike('quartier', `%${q}%`)
         .eq('is_blocked', false)
-        .eq('is_active',  true),
+        .eq('is_active',  true)),
 
-      db.from(TABLES.SELLERS).select('*')
-        .ilike('ville',     `%${q}%`)
+      addVille(db.from(TABLES.SELLERS).select('*')
+        .ilike('ville', `%${q || villeFilter}%`)
         .eq('is_blocked', false)
-        .eq('is_active',  true),
+        .eq('is_active',  true)),
 
-      db.from(TABLES.SELLERS).select('*')
+      addVille(db.from(TABLES.SELLERS).select('*')
         .ilike('full_name', `%${q}%`)
         .eq('is_blocked', false)
-        .eq('is_active',  true),
+        .eq('is_active',  true)),
 
       db.from(TABLES.PRODUCTS)
         .select('*, sellers!inner(full_name, phone, quartier, ville, is_blocked)')
@@ -147,9 +175,9 @@ async function performSearch(query) {
     ]);
 
     // Fusionner vendeurs sans doublons
-    const allSellers    = [
+    const allSellers = [
       ...(sellersByQuartier || []),
-      ...(sellersByVille    || []),
+      ...(sellersByVilleQ   || []),
       ...(sellersByName     || [])
     ];
     const uniqueSellers = allSellers.filter(
@@ -159,7 +187,8 @@ async function performSearch(query) {
     results.sellers  = uniqueSellers;
     results.products = productsByName || [];
 
-    renderSearchResults(results, `Résultats pour "${query}"`);
+    const label = villeFilter ? `"${query}" à ${villeFilter}` : `"${query}"`;
+    renderSearchResults(results, `Résultats pour ${label}`);
 
   } catch (e) {
     console.error('performSearch exception:', e);

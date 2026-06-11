@@ -1,9 +1,98 @@
 // ==================== SELLERS.JS ====================
 
 // ================================================================
-// ✅ CORRECTION 2 : escapeHtml déplacée au niveau global
-//    (était imbriquée dans renderProducts — re-créée à chaque appel)
+// SYSTÈME D'ÉTOILES & BADGES
+// Règles :
+//  - 1 client = 1 seule étoile par vendeur (même après fermeture)
+//  - Stocké en localStorage : clé "star_{sellerId}" = "1"
+//  - Badges : 7 étoiles = argent, 20 = bronze, 50 = or
+//  - Admin peut forcer depuis admin.html
 // ================================================================
+
+const BADGE_SILVER = 7;
+const BADGE_BRONZE = 20;
+const BADGE_GOLD   = 50;
+
+function getBadgeHtml(stars = 0, badge = null) {
+  // badge peut être 'silver','bronze','gold' (forcé admin) ou calculé depuis stars
+  const computed = badge || (stars >= BADGE_GOLD ? 'gold' : stars >= BADGE_BRONZE ? 'bronze' : stars >= BADGE_SILVER ? 'silver' : null);
+  if (!computed) return '';
+  const map = {
+    silver: { emoji: '🥈', label: 'Badge Argent', color: '#a0aec0' },
+    bronze: { emoji: '🥉', label: 'Badge Bronze', color: '#c07b3a' },
+    gold:   { emoji: '🥇', label: 'Badge Or',     color: '#f6c90e' }
+  };
+  const b = map[computed];
+  if (!b) return '';
+  return `<span class="seller-badge" style="background:${b.color}20;border:1px solid ${b.color};
+    color:${b.color};font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;
+    display:inline-flex;align-items:center;gap:3px;">${b.emoji} ${b.label}</span>`;
+}
+
+function getStarHtml(sellerId, entityType = 'seller', stars = 0, badge = null) {
+  const storageKey = `star_${entityType}_${sellerId}`;
+  const alreadyGiven = !!localStorage.getItem(storageKey);
+  const starColor = alreadyGiven ? '#fadb14' : '#e8e8e8';
+  const title = alreadyGiven ? 'Vous avez déjà donné une étoile' : 'Donner une étoile';
+
+  return `
+    <div class="star-row" style="display:flex;align-items:center;gap:6px;margin:6px 0 4px;">
+      <button class="star-btn" data-id="${sellerId}" data-type="${entityType}"
+        onclick="giveStar('${sellerId}','${entityType}',this)"
+        title="${title}"
+        style="background:none;border:none;cursor:${alreadyGiven ? 'default' : 'pointer'};
+               font-size:20px;line-height:1;padding:0;opacity:${alreadyGiven ? '0.6' : '1'};"
+        ${alreadyGiven ? 'disabled' : ''}>
+        <span style="color:${starColor};">⭐</span>
+      </button>
+      <span class="star-count" style="font-size:13px;font-weight:700;color:#555;">${stars} étoile${stars > 1 ? 's' : ''}</span>
+      ${getBadgeHtml(stars, badge)}
+    </div>`;
+}
+
+async function giveStar(entityId, entityType, btn) {
+  const storageKey = `star_${entityType}_${entityId}`;
+  if (localStorage.getItem(storageKey)) {
+    showToast('Vous avez déjà donné une étoile à ce vendeur', 'info');
+    return;
+  }
+
+  try {
+    const table = entityType === 'livreur' ? 'delivery_agents' : TABLES.SELLERS;
+
+    // Lire les étoiles actuelles
+    const { data: entity } = await db.from(table).select('stars').eq('id', entityId).single();
+    const currentStars = (entity?.stars || 0) + 1;
+
+    await db.from(table).update({ stars: currentStars }).eq('id', entityId);
+
+    // Marquer localement — illimité dans le temps
+    localStorage.setItem(storageKey, '1');
+
+    // Mise à jour visuelle immédiate
+    btn.style.opacity = '0.6';
+    btn.disabled = true;
+    btn.querySelector('span').style.color = '#fadb14';
+    const countEl = btn.closest('.star-row')?.querySelector('.star-count');
+    if (countEl) countEl.innerText = `${currentStars} étoile${currentStars > 1 ? 's' : ''}`;
+
+    // Badge dynamique
+    const badgeEl = btn.closest('.star-row');
+    if (badgeEl) {
+      const existing = badgeEl.querySelector('.seller-badge');
+      if (existing) existing.remove();
+      const newBadge = getBadgeHtml(currentStars);
+      if (newBadge) badgeEl.insertAdjacentHTML('beforeend', newBadge);
+    }
+
+    showToast('⭐ Merci pour votre étoile !', 'success');
+
+  } catch(e) {
+    showToast('Erreur, réessayez', 'error');
+  }
+}
+
+
 function escapeHtml(str) {
   return str?.replace(/&/g, '&amp;')
              .replace(/</g, '&lt;')
@@ -76,6 +165,7 @@ async function loadSellers(catId) {
           <h3>${escapeHtml(seller.full_name)}</h3>
           <p class="seller-location">📍 ${escapeHtml(seller.quartier)}, ${escapeHtml(seller.ville)}</p>
           <p class="seller-desc">${escapeHtml(seller.description)}</p>
+          ${getStarHtml(seller.id, 'seller', seller.stars || 0, seller.badge || null)}
           <div class="seller-actions">
             <button class="view-btn"
               onclick="openSellerProducts('${seller.id}', '${currentCategoryType}')">

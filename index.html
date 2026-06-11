@@ -153,27 +153,54 @@ header p { font-size: 12px; opacity: .80; }
   letter-spacing: .5px;
 }
 
-.categories { padding: 0 15px 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.categories { padding: 0 15px 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 
 .cat-btn {
   background: white;
   border: none;
-  padding: 16px 12px;
-  border-radius: 16px;
+  padding: 7px 6px;
+  border-radius: 12px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,.07);
+  box-shadow: 0 2px 6px rgba(0,0,0,.07);
   transition: .2s;
   text-align: center;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .cat-btn:active { transform: scale(.97); }
-.big-btn { grid-column: 1/3; font-size: 15px; padding: 20px; background: #1677FF; color: white; border-radius: 18px; }
+.cat-btn-lg { 
+  padding: 0 8px;
+  font-size: 13.5px; 
+  border-radius: 13px;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.big-btn { font-size: 12px; padding: 11px 8px; background: #1677FF; color: white; border-radius: 13px; }
 .promo-btn { background: linear-gradient(135deg, #ff4d4f, #d42020); color: white; }
 .register-cat-btn { background: linear-gradient(135deg, #52c41a, #389e0d); color: white; }
 .login-cat-btn { background: #f0f0f0; color: #333; }
+
+/* Select ville compact */
+#searchVilleFilter {
+  padding: 8px 6px !important;
+  font-size: 12px !important;
+  min-width: 90px !important;
+  border-radius: 12px !important;
+}
+.ville-opt {
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  border-bottom: 1px solid #f5f5f5;
+  transition: background .15s;
+}
+.ville-opt:active, .ville-opt:hover { background: #f0f7ff; color: #1677FF; }
 
 /* ==================== SELLERS ==================== */
 .sellers-page, .products-page, .register-page { padding: 15px; }
@@ -700,8 +727,52 @@ header p { font-size: 12px; opacity: .80; }
 
 <!-- ========== SEARCH ========== -->
 <div class="search-box">
-  <input type="text" id="searchInput" placeholder="Rechercher produit, vendeur, quartier..."
-    oninput="handleSearch()">
+  <div style="display:flex;gap:6px;position:relative;">
+    <input type="text" id="searchInput" placeholder="Produit, vendeur, quartier, ville..."
+      oninput="handleSearch()" style="flex:1;">
+
+    <!-- Custom dropdown ville -->
+    <div id="villeDropdown" style="position:relative;flex-shrink:0;">
+      <button onclick="toggleVilleDropdown(event)"
+        style="display:flex;align-items:center;gap:3px;padding:0 10px;height:100%;
+               background:white;border:none;border-radius:12px;font-size:11px;font-weight:700;
+               color:#333;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.1);
+               white-space:nowrap;min-width:72px;justify-content:center;">
+        <span id="villeDropdownLabel">📍 Toutes</span>
+        <span style="font-size:9px;opacity:.5;">▼</span>
+      </button>
+      <div id="villeDropdownMenu"
+        style="display:none;position:absolute;right:0;top:calc(100% + 4px);
+               background:white;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.15);
+               z-index:9999;min-width:150px;overflow:hidden;max-height:260px;overflow-y:auto;">
+        <div onclick="selectVille('','📍 Toutes')"
+          class="ville-opt" style="padding:10px 14px;font-size:13px;font-weight:700;color:#1677FF;border-bottom:1px solid #f0f0f0;">
+          📍 Toutes les villes
+        </div>
+        <div onclick="selectVille('Brazzaville','Brazzaville')"         class="ville-opt">Brazzaville</div>
+        <div onclick="selectVille('Pointe-Noire','Pointe-Noire')"       class="ville-opt">Pointe-Noire</div>
+        <div onclick="selectVille('Dolisie','Dolisie')"                 class="ville-opt">Dolisie</div>
+        <div onclick="selectVille('Nkayi','Nkayi')"                     class="ville-opt">Nkayi</div>
+        <div onclick="selectVille('Oyo','Oyo')"                         class="ville-opt">Oyo</div>
+        <div onclick="selectVille('Bétou','Bétou')"                     class="ville-opt">Bétou</div>
+        <div onclick="selectVille('Ouesso','Ouesso')"                   class="ville-opt">Ouesso</div>
+        <div onclick="selectVille('Impfondo','Impfondo')"               class="ville-opt">Impfondo</div>
+        <div onclick="selectVille('Madingou','Madingou')"               class="ville-opt">Madingou</div>
+        <div onclick="selectVille('Owando','Owando')"                   class="ville-opt">Owando</div>
+        <div onclick="selectVille('Sibiti','Sibiti')"                   class="ville-opt">Sibiti</div>
+        <div onclick="selectVille('Mossaka','Mossaka')"                 class="ville-opt">Mossaka</div>
+        <div onclick="selectVille('Gamboma','Gamboma')"                 class="ville-opt">Gamboma</div>
+        <div onclick="selectVille('Djambala','Djambala')"               class="ville-opt">Djambala</div>
+        <div onclick="selectVille('Makoua','Makoua')"                   class="ville-opt">Makoua</div>
+        <div onclick="selectVille('Kinkala','Kinkala')"                 class="ville-opt">Kinkala</div>
+        <div onclick="selectVille('Ewo','Ewo')"                         class="ville-opt">Ewo</div>
+        <div onclick="selectVille('Dongou','Dongou')"                   class="ville-opt">Dongou</div>
+      </div>
+    </div>
+
+    <!-- Champ caché pour la valeur ville -->
+    <input type="hidden" id="searchVilleFilter" value="">
+  </div>
 </div>
 
 <!-- ========== HOME PAGE ========== -->
@@ -719,67 +790,70 @@ header p { font-size: 12px; opacity: .80; }
     </div>
   </div>
   
-<!-- CATÉGORIE A -->
+  <!-- TOP ACTIONS — 2 colonnes -->
+  <div class="categories" style="padding-top:10px;">
+    <button class="cat-btn cat-btn-lg" style="background:linear-gradient(135deg,#1677FF,#0d5bd1);color:white;" onclick="openCategory('ig','A')">🏭 Importateurs &amp; Grossistes</button>
+    <button class="cat-btn cat-btn-lg" style="background:linear-gradient(135deg,#fa8c16,#d46b08);color:white;" onclick="openDeliveryAgentRegister()">🚚 Devenir Agent Livreur</button>
+  </div>
 
-  <div class="section-label">⭐ Importateurs & Grossistes</div>
+  <!-- CATÉGORIE A (multi-services) -->
+  <div class="section-label">⭐ Multi-Services & Commerces</div>
   <div class="categories">
-    <button class="cat-btn big-btn" onclick="openCategory('ig','A')">Meilleur Importateurs & Grossistes de Brazzaville</button>
-    <div style="grid-column:1/3;padding:8px 0 4px;font-size:11px;font-weight:700;color:#888;border-left:3px solid #1677FF;padding-left:8px;">🔷 MULTI-SERVICES</div>
-    <button class="cat-btn" onclick="openCategory('immo','A')">🏠 Immobilier</button>
-    <button class="cat-btn" onclick="openCategory('coiffure','A')">✂️ Grand Salon de Coiffure</button>
-    <button class="cat-btn" onclick="openCategory('hotel','A')">🏨 Hôtel, Jardin & Tourisme</button>
-    <button class="cat-btn" onclick="openCategory('deco-mariage','A')">💍 Décoration Mariage</button>
-    <button class="cat-btn" onclick="openCategory('menage','A')">🧹 Service de Ménage</button>
-    <button class="cat-btn" onclick="openCategory('demenagement','A')">🚛 Service de Déménagement</button>
-    <button class="cat-btn" onclick="openCategory('auto','A')">🚗 Automobile & Dépannage</button>
-    <button class="cat-btn" onclick="openCategory('couture','A')">🧵 Couture & Styliste</button>
-    <button class="cat-btn" onclick="openCategory('pharmacie','A')">💊 Pharmacie</button>
-    <button class="cat-btn" onclick="openCategory('priseningue','A')">🏥 Prinsingue</button>
-    <button class="cat-btn" onclick="openCategory('librairie','A')">📚 Librairie & Papeterie</button>
-    <button class="cat-btn" onclick="openCategory('construction','A')">🏗️ Matériaux de Construction</button>
-    <button class="cat-btn" onclick="openCategory('photoShop','A')">📸 Photo Shop</button>
-    <button class="cat-btn" onclick="openCategory('alimentation','A')">🛒 Alimentation</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('immo','A')">🏠 Immobilier</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('coiffure','A')">✂️ Grand Salon Coiffure</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('hotel','A')">🏨 Hôtel & Tourisme</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('deco-mariage','A')">💍 Décoration Mariage</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('menage','A')">🧹 Service de Ménage</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('demenagement','A')">🚛 Déménagement</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('auto','A')">🚗 Automobile & Dépannage</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('couture','A')">🧵 Couture & Styliste</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('pharmacie','A')">💊 Pharmacie</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('priseningue','A')">🏥 Prinsingue</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('librairie','A')">📚 Librairie & Papeterie</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('construction','A')">🏗️ Construction</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('photoShop','A')">📸 Photo Shop</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('alimentation','A')">🛒 Alimentation</button>
   </div>
 
   <!-- CATÉGORIE B -->
   <div class="section-label">🛍️ Boutiques & Vendeurs</div>
   <div class="categories">
-    <button class="cat-btn" onclick="openCategory('c1','B')">👟 Chaussures & Basket</button>
-    <button class="cat-btn" onclick="openCategory('c2','B')">📱 Accessoires Téléphone</button>
-    <button class="cat-btn" onclick="openCategory('c3','B')">💄 Beauté & Cosmétiques</button>
-    <button class="cat-btn" onclick="openCategory('c4','B')">👗 Vêtements Femme</button>
-    <button class="cat-btn" onclick="openCategory('c5','B')">👠 Chaussures Femme</button>
-    <button class="cat-btn" onclick="openCategory('c6','B')">👜 Sacs & Accessoires Mode</button>
-    <button class="cat-btn" onclick="openCategory('c7','B')">🏠 Maison & Décoration</button>
-    <button class="cat-btn" onclick="openCategory('c8','B')">🧼 Savon Artisanal</button>
-    <button class="cat-btn" onclick="openCategory('c9','B')">🌸 Parfums & Soins Luxe</button>
-    <button class="cat-btn" onclick="openCategory('c10','B')">👶 Bébé & Enfants</button>
-    <button class="cat-btn" onclick="openCategory('c11','B')">💇 Perruques & Mèches</button>
-    <button class="cat-btn" onclick="openCategory('c12','B')">🩱 Lingerie & Rideau</button>
-    <button class="cat-btn" onclick="openCategory('c13','B')">💊 Santé & Bien-être</button>
-    <button class="cat-btn" onclick="openCategory('c14','B')">👔 Friperie & Habit de Travail</button>
-    <button class="cat-btn" onclick="openCategory('c15','B')">🧵 Tissus & Pagnes</button>
-    <button class="cat-btn" onclick="openCategory('c16','B')">🚢 Occasion d'Europe</button>
-    <button class="cat-btn" onclick="openCategory('c17','B')">🎂 Pâtisserie</button>
-    <button class="cat-btn" onclick="openCategory('c18','B')">🕴️ Veste & Chaussures Luxe</button>
-    <button class="cat-btn" onclick="openCategory('c19','B')">🧴 Plastique</button>
-    <button class="cat-btn" onclick="openCategory('c20','B')">📺 Électronique</button>
-    <button class="cat-btn" onclick="openCategory('c21','B')">🥚 Grossiste Œufs</button>
-    <button class="cat-btn" onclick="openCategory('c22','B')">🎉 Anniversaire & Objet Jetable</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c1','B')">👟 Chaussures & Basket</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c2','B')">📱 Accessoires Téléphone</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c3','B')">💄 Beauté & Cosmétiques</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c4','B')">👗 Vêtements Femme</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c5','B')">👠 Chaussures Femme</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c6','B')">👜 Sacs & Mode</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c7','B')">🏠 Maison & Déco</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c8','B')">🧼 Savon Artisanal</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c9','B')">🌸 Parfums & Soins</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c10','B')">👶 Bébé & Enfants</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c11','B')">💇 Perruques & Mèches</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c12','B')">🩱 Lingerie & Rideau</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c13','B')">💊 Santé & Bien-être</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c14','B')">👔 Friperie Premium</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c15','B')">🧵 Tissus & Pagnes</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c16','B')">🚢 Occasion d'Europe</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c17','B')">🎂 Pâtisserie</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c18','B')">🕴️ Veste & Chaussures Luxe</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c19','B')">🧴 Plastique</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c20','B')">📺 Électronique</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c21','B')">🥚 Grossiste Œufs</button>
+    <button class="cat-btn cat-btn-lg" onclick="openCategory('c22','B')">🎉 Anniversaire & Jetable</button>
   </div>
 
-  <!-- PROMOS -->
-  <div class="section-label">🔥 Promotions & Liquidations</div>
+  <!-- PROMOS + CONNEXION -->
+  <div class="section-label">🔥 Promotions & Connexion</div>
   <div class="categories">
-    <button class="cat-btn big-btn promo-btn" onclick="loadPromos('A')">🔥 Promos Catégorie A</button>
-    <button class="cat-btn big-btn promo-btn" onclick="loadPromos('B')">💥 Promos Catégorie B</button>
+    <button class="cat-btn cat-btn-lg promo-btn" onclick="loadAllPromos()">🔥 Toutes les Promos</button>
+    <button class="cat-btn cat-btn-lg login-cat-btn" onclick="openSellerLogin()">🔑 Se connecter</button>
   </div>
 
-  <!-- VENDEUR -->
-  <div class="section-label">🏪 Espace Vendeur</div>
+  <!-- INSCRIPTION -->
+  <div class="section-label">✏️ Inscription</div>
   <div class="categories">
-    <button class="cat-btn register-cat-btn" onclick="openRegister()">✅ Devenir vendeur</button>
-    <button class="cat-btn login-cat-btn" onclick="openSellerLogin()">🔑 Se connecter</button>
+    <button class="cat-btn" style="background:linear-gradient(135deg,#722ed1,#531dab);color:white;font-size:12px;line-height:1.4;" onclick="openVIPRegister()">👑 Vendeur &amp; Grossiste<br><small style="font-weight:400;opacity:.9;">VIP — Géré par Moboro</small></button>
+    <button class="cat-btn register-cat-btn" style="font-size:12px;line-height:1.4;" onclick="openIndependantChoice()">✅ Vendeur &amp; Grossiste<br><small style="font-weight:400;opacity:.9;">Indépendant — Géré par vous</small></button>
   </div>
 
   <!-- FOOTER -->
@@ -894,7 +968,27 @@ header p { font-size: 12px; opacity: .80; }
       <input type="tel" id="regPhone" placeholder="Téléphone *">
       <input type="text" id="regQuartier" placeholder="Quartier *">
       <input type="text" id="regAddress" placeholder="Adresse *">
-      <input type="text" id="regVille" placeholder="Ville * (ex: Brazzaville)">
+      <select id="regVille" style="width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #e8e8e8;margin-bottom:10px;font-size:14px;outline:none;background:#fafafa;">
+        <option value="">Choisir votre ville *</option>
+        <option value="Brazzaville">Brazzaville</option>
+        <option value="Pointe-Noire">Pointe-Noire</option>
+        <option value="Dolisie">Dolisie</option>
+        <option value="Nkayi">Nkayi</option>
+        <option value="Oyo">Oyo</option>
+        <option value="Bétou">Bétou</option>
+        <option value="Ouesso">Ouesso</option>
+        <option value="Impfondo">Impfondo</option>
+        <option value="Madingou">Madingou</option>
+        <option value="Owando">Owando</option>
+        <option value="Sibiti">Sibiti</option>
+        <option value="Mossaka">Mossaka</option>
+        <option value="Gamboma">Gamboma</option>
+        <option value="Djambala">Djambala</option>
+        <option value="Makoua">Makoua</option>
+        <option value="Kinkala">Kinkala</option>
+        <option value="Ewo">Ewo</option>
+        <option value="Dongou">Dongou</option>
+      </select>
       <select id="regCategory">
         <option value="">Choisir votre catégorie *</option>
         <optgroup label="Catégorie A - Importateurs & Grossistes">
@@ -1028,6 +1122,9 @@ header p { font-size: 12px; opacity: .80; }
       </button>
       <button class="dash-btn" onclick="viewMyStats()">
         <span class="icon">📊</span>Mes statistiques
+      </button>
+      <button class="dash-btn" style="background:#fa8c16;color:white;" onclick="openContactDelivery()">
+        <span class="icon">🚚</span>Contacter un livreur
       </button>
       <!-- Alerte abonnement -->
       <div id="subscriptionAlert"
@@ -1206,102 +1303,439 @@ header p { font-size: 12px; opacity: .80; }
   </div>
 </div>
 
-<!-- ========== ADMIN LOGIN PAGE ========== -->
+<!-- ========== VIP LOGIN PAGE ========== -->
 <div class="page" id="adminLoginPage">
   <div class="register-page">
     <div class="page-header">
       <button class="back-btn" onclick="goHome()">←</button>
-      <div><div class="section-title">Administration</div></div>
+      <div><div class="section-title">👑 Espace VIP Moboro</div></div>
     </div>
     <div class="form-card">
-      <input type="text" id="adminCode" placeholder="Code administrateur">
-      <input type="password" id="adminPin" placeholder="Mot de passe admin">
-      <button class="primary-btn" onclick="adminLogin()">Connexion admin</button>
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-size:42px;">👑</div>
+        <p style="font-size:13px;color:#888;">Accès réservé aux gestionnaires VIP</p>
+      </div>
+      <input type="text" id="vipManagerCode" placeholder="Code gestionnaire VIP *" style="text-transform:uppercase;">
+      <input type="password" id="vipManagerPin" placeholder="PIN *" maxlength="8">
+      <button class="primary-btn" style="background:#722ed1;" onclick="vipManagerLogin()">🔐 Connexion espace VIP</button>
+      <button class="secondary-btn" onclick="goHome()">Annuler</button>
     </div>
   </div>
 </div>
 
-<!-- ========== ADMIN DASHBOARD ========== -->
+<!-- ========== VIP DASHBOARD ========== -->
 <div class="page" id="adminDashboard">
-  <div class="admin-page">
+  <div class="register-page">
     <div class="page-header">
       <button class="back-btn" onclick="goHome()">←</button>
-      <div><div class="section-title">Tableau de bord Admin</div></div>
+      <div><div class="section-title">👑 Espace VIP</div></div>
     </div>
 
-    <!-- Stats -->
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-number" id="statTotalSellers">-</div>
-        <div class="stat-label">Vendeurs total</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="statTodaySellers">-</div>
-        <div class="stat-label">Inscrits aujourd'hui</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="statTodayVisits">-</div>
-        <div class="stat-label">Visites aujourd'hui</div>
-              </div>
-      <div class="stat-card">
-        <div class="stat-number" id="statTotalVisits">-</div>
-        <div class="stat-label">Visites total</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="statTodayOrders">-</div>
-        <div class="stat-label">Commandes aujourd'hui</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="statTotalOrders">-</div>
-        <div class="stat-label">Commandes total</div>
+    <div style="text-align:center;padding:10px 0 16px;">
+      <div style="font-size:36px;">👑</div>
+      <div style="font-size:16px;font-weight:700;color:#722ed1;">Gestion des comptes VIP</div>
+      <div style="font-size:12px;color:#888;margin-top:4px;">Marché Moboro</div>
+    </div>
+
+    <!-- Compte : ouvre la liste des comptes -->
+    <div style="background:#f9f0ff;border:1px solid #d3adf7;padding:14px;border-radius:14px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:#722ed1;margin-bottom:10px;">📋 Compte</div>
+      <div class="dash-grid">
+        <button class="dash-btn" style="background:#1677FF;color:white;font-size:12px;line-height:1.4;" onclick="openVIPList('grossiste')">
+          <span class="icon">🏭</span>Importateur &amp;<br>Grossiste VIP
+        </button>
+        <button class="dash-btn" style="background:#722ed1;color:white;font-size:12px;line-height:1.4;" onclick="openVIPList('vendeur')">
+          <span class="icon">🛍️</span>Vendeur VIP
+        </button>
       </div>
     </div>
 
-    <!-- Supprimer compte -->
-    <div class="form-card" style="margin-bottom:14px;">
-      <h2>🗑️ Supprimer un compte</h2>
-      <input type="text" id="deleteSellerCode" placeholder="Code vendeur (ex: MBR0001A)" style="text-transform:uppercase;">
-      <button class="danger-btn" onclick="deleteSellerAccount()">Supprimer définitivement</button>
+    <!-- Inscription : 2 boutons -->
+    <div style="background:#f6ffed;border:1px solid #b7eb8f;padding:14px;border-radius:14px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:#389e0d;margin-bottom:10px;">✏️ Inscription</div>
+      <div class="dash-grid">
+        <button class="dash-btn" style="background:linear-gradient(135deg,#1677FF,#0d5bd1);color:white;font-size:11px;line-height:1.4;" onclick="openVIPRegisterForm('grossiste')">
+          <span class="icon">🏭</span>Importateur &amp;<br>Grossiste VIP
+        </button>
+        <button class="dash-btn" style="background:linear-gradient(135deg,#722ed1,#531dab);color:white;font-size:11px;line-height:1.4;" onclick="openVIPRegisterForm('vendeur')">
+          <span class="icon">🛍️</span>Vendeur VIP<br><small style="font-weight:400;opacity:.85;">(toutes catégories)</small>
+        </button>
+      </div>
     </div>
 
-    <!-- Filtres vendeurs -->
-    <div class="form-card" style="margin-bottom:14px;">
-      <h2>Liste des vendeurs</h2>
-      <input type="text" id="filterVille" placeholder="Filtrer par ville">
-      <input type="text" id="filterQuartier" placeholder="Filtrer par quartier">
-      <button class="primary-btn" onclick="loadSellersList()">Rechercher</button>
-    </div>
+    <button class="secondary-btn" onclick="vipManagerLogout()">Se déconnecter</button>
+  </div>
+</div>
 
-    <div style="overflow-x:auto;">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Code</th>
-            <th>Vendeur</th>
-            <th>Catégorie</th>
-            <th>Dynamisme</th>
-            <th>Abonnement</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="sellersTableBody">
-          <tr><td colspan="6" style="text-align:center;padding:20px;color:#888;">Cliquez sur "Rechercher"</td></tr>
-        </tbody>
-      </table>
+<!-- ========== VIP ACCOUNTS LIST PAGE ========== -->
+<div class="page" id="vipListPage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('adminDashboard')">←</button>
+      <div><div class="section-title" id="vipListTitle">Comptes VIP</div></div>
     </div>
+    <div id="vipAccountsList">
+      <div class="loading">Chargement...</div>
+    </div>
+  </div>
+</div>
 
-    <!-- Positions -->
-    <div class="form-card" style="margin-top:16px;">
-      <h2>Positions par catégorie</h2>
-      <select id="positionCat" onchange="loadPositions(this.value)">
-        <option value="">Choisir catégorie</option>
-        <option value="ig">Importateurs & Grossistes</option>
-        <option value="c1">Chaussures & Basket</option>
-        <option value="c2">Accessoires Téléphone</option>
-        <option value="c3">Beauté & Cosmétiques</option>
-        <option value="c4">Vêtements Femme</option>
+<!-- ========== VIP REGISTER FORM ========== -->
+<div class="page" id="vipRegisterFormPage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('adminDashboard')">←</button>
+      <div><div class="section-title" id="vipRegisterFormTitle">Créer compte VIP</div></div>
+    </div>
+    <div class="form-card">
+      <input type="text" id="vipRegFullName" placeholder="Nom complet *">
+      <input type="tel" id="vipRegPhone" placeholder="Téléphone *">
+      <input type="text" id="vipRegQuartier" placeholder="Quartier *">
+      <input type="text" id="vipRegAddress" placeholder="Adresse *">
+      <select id="vipRegVille" style="width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #e8e8e8;margin-bottom:10px;font-size:14px;outline:none;background:#fafafa;">
+        <option value="">Choisir votre ville *</option>
+        <option value="Brazzaville">Brazzaville</option>
+        <option value="Pointe-Noire">Pointe-Noire</option>
+        <option value="Dolisie">Dolisie</option>
+        <option value="Nkayi">Nkayi</option>
+        <option value="Oyo">Oyo</option>
+        <option value="Bétou">Bétou</option>
+        <option value="Ouesso">Ouesso</option>
+        <option value="Impfondo">Impfondo</option>
+        <option value="Madingou">Madingou</option>
+        <option value="Owando">Owando</option>
+        <option value="Sibiti">Sibiti</option>
+        <option value="Mossaka">Mossaka</option>
+        <option value="Gamboma">Gamboma</option>
+        <option value="Djambala">Djambala</option>
+        <option value="Makoua">Makoua</option>
+        <option value="Kinkala">Kinkala</option>
+        <option value="Ewo">Ewo</option>
+        <option value="Dongou">Dongou</option>
       </select>
-      <div id="positionsList"></div>
+      <select id="vipRegCategory"><option value="">Choisir la catégorie *</option></select>
+      <textarea id="vipRegDescription" placeholder="Description de l'activité *"></textarea>
+      <input type="password" id="vipRegPin" placeholder="PIN du compte (4-6 chiffres) *" maxlength="6" inputmode="numeric">
+      <div class="info-box" style="font-size:12px;">⚠️ Notez le code et le PIN — à communiquer au client.</div>
+      <button class="primary-btn" style="background:#722ed1;" onclick="submitVIPRegistration()">👑 Créer le compte VIP</button>
+      <div id="vipRegResult" style="display:none;margin-top:12px;background:#f9f0ff;border:1px solid #d3adf7;padding:14px;border-radius:12px;font-size:14px;line-height:1.8;"></div>
+      <button class="secondary-btn" style="margin-top:10px;" onclick="showPage('adminDashboard')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== VIP SELLER LOGIN ========== -->
+<div class="page" id="vipSellerLoginPage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('adminDashboard')">←</button>
+      <div><div class="section-title" id="vipSellerLoginTitle">Connexion VIP</div></div>
+    </div>
+    <div class="form-card">
+      <div id="vipSellerLoginBadge" style="text-align:center;margin-bottom:14px;font-size:32px;"></div>
+      <input type="text" id="vipSellerCode" placeholder="Code vendeur VIP (ex: MBR0001A)" style="text-transform:uppercase;">
+      <input type="password" id="vipSellerPin" placeholder="PIN" maxlength="6" inputmode="numeric">
+      <button class="primary-btn" style="background:#722ed1;" onclick="vipSellerLogin()">🔐 Se connecter</button>
+      <button class="secondary-btn" onclick="showPage('adminDashboard')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE : CHOIX INDÉPENDANT ========== -->
+<div class="page" id="independantChoicePage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <div><div class="section-title">Type de compte</div></div>
+    </div>
+    <div class="form-card">
+      <div class="info-box" style="background:#f0f7ff;">
+        <strong>✅ Compte Indépendant</strong><br><br>
+        Vous gérez tout vous-même : publications, promotions, commandes.<br>
+        Payez uniquement votre abonnement mensuel.
+      </div>
+      <div style="background:#f9f9f9;padding:14px;border-radius:14px;margin-bottom:14px;font-size:13px;line-height:1.8;">
+        💰 <strong>Tarifs abonnement :</strong><br>
+        • Vendeur indépendant : <strong>2 000 FCFA/mois</strong><br>
+        • Grossiste &amp; Importateur indépendant : <strong>5 000 FCFA/mois</strong>
+      </div>
+      <button class="primary-btn" style="background:linear-gradient(135deg,#52c41a,#389e0d);" onclick="openIndependantVendeur()">✅ Vendeur Indépendant</button>
+      <button class="primary-btn" style="margin-top:10px;background:linear-gradient(135deg,#1677FF,#0d5bd1);" onclick="openIndependantGrossiste()">🏭 Grossiste &amp; Importateur Indépendant</button>
+      <button class="secondary-btn" onclick="goHome()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TERMS VENDEUR INDÉPENDANT ========== -->
+<div class="page" id="termsIndependantPage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('independantChoicePage')">←</button>
+      <div><div class="section-title">Conditions d'utilisation</div></div>
+    </div>
+    <div class="form-card">
+      <div class="info-box">
+        <strong>Bienvenue sur Marché Moboro</strong><br><br>
+        Créez votre espace vendeur et gardez <strong>100% de vos ventes</strong>.<br>
+        Aucune commission sur vos transactions.
+      </div>
+      <div class="terms-content">
+        <h3>📋 Conditions du Marché</h3>
+        <h3>1. Inscription gratuite</h3>
+        <p>L'inscription est 100% gratuite. Aucun frais lors de la création.</p>
+        <h3>2. Frais d'abonnement</h3>
+        <p>• Vendeur indépendant : <strong>2 000 FCFA/mois</strong><br>
+        • Grossiste indépendant : <strong>5 000 FCFA/mois</strong><br>
+        Votre compte sera automatiquement bloqué en cas de non-paiement.</p>
+        <h3>3. Sans engagement</h3>
+        <p>Arrêtez à tout moment sans pénalité.</p>
+        <h3>4. Publications</h3>
+        <p>Vous publiez uniquement des produits légaux et conformes aux lois congolaises.</p>
+        <h3>5. Commission</h3>
+        <p>Marché Moboro ne prend <strong>aucune commission</strong> sur vos ventes.</p>
+        <h3>6. Gestion autonome</h3>
+        <p>En tant que compte indépendant, vous gérez vous-même vos publications, promos et contacts clients.</p>
+      </div>
+      <button class="primary-btn" onclick="acceptIndependantTerms()">✅ Accepter et s'inscrire</button>
+      <button class="secondary-btn" onclick="showPage('independantChoicePage')">✕ Refuser</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== REGISTER INDÉPENDANT ========== -->
+<div class="page" id="registerIndependantPage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('termsIndependantPage')">←</button>
+      <div><div class="section-title" id="registerIndependantTitle">Créer mon compte</div></div>
+    </div>
+    <div class="form-card">
+      <h2>Informations</h2>
+      <input type="text" id="indepFullName" placeholder="Nom complet *">
+      <input type="tel" id="indepPhone" placeholder="Téléphone *">
+      <input type="text" id="indepQuartier" placeholder="Quartier *">
+      <input type="text" id="indepAddress" placeholder="Adresse *">
+      <select id="indepVille" style="width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #e8e8e8;margin-bottom:10px;font-size:14px;outline:none;background:#fafafa;">
+        <option value="">Choisir votre ville *</option>
+        <option value="Brazzaville">Brazzaville</option>
+        <option value="Pointe-Noire">Pointe-Noire</option>
+        <option value="Dolisie">Dolisie</option>
+        <option value="Nkayi">Nkayi</option>
+        <option value="Oyo">Oyo</option>
+        <option value="Bétou">Bétou</option>
+        <option value="Ouesso">Ouesso</option>
+        <option value="Impfondo">Impfondo</option>
+        <option value="Madingou">Madingou</option>
+        <option value="Owando">Owando</option>
+        <option value="Sibiti">Sibiti</option>
+        <option value="Mossaka">Mossaka</option>
+        <option value="Gamboma">Gamboma</option>
+        <option value="Djambala">Djambala</option>
+        <option value="Makoua">Makoua</option>
+        <option value="Kinkala">Kinkala</option>
+        <option value="Ewo">Ewo</option>
+        <option value="Dongou">Dongou</option>
+      </select>
+      <select id="indepCategory">
+        <option value="">Choisir votre catégorie *</option>
+        <optgroup label="Catégorie A - Importateurs & Grossistes">
+          <option value="ig">Importateurs &amp; Grossistes</option>
+          <option value="immo">Immobilier</option>
+          <option value="coiffure">Grand Salon de Coiffure</option>
+          <option value="hotel">Hôtel, Jardin &amp; Lieu Touristique</option>
+          <option value="deco-mariage">Décoration Mariage &amp; Autres</option>
+          <option value="menage">Service de Ménage</option>
+          <option value="demenagement">Service de Déménagement</option>
+          <option value="auto">Automobile &amp; Dépannage</option>
+          <option value="couture">Couture &amp; Styliste</option>
+          <option value="pharmacie">Pharmacie</option>
+          <option value="construction">Matériaux de Construction</option>
+          <option value="alimentation">Alimentation</option>
+        </optgroup>
+        <optgroup label="Catégorie B - Boutiques & Vendeurs">
+          <option value="c1">Chaussures &amp; Basket</option>
+          <option value="c2">Accessoires Téléphone</option>
+          <option value="c3">Beauté &amp; Cosmétiques</option>
+          <option value="c4">Vêtements Femme</option>
+          <option value="c5">Chaussures Femme</option>
+          <option value="c6">Sacs &amp; Accessoires Mode</option>
+          <option value="c7">Maison &amp; Décoration</option>
+          <option value="c8">Savon Artisanal &amp; Naturel</option>
+          <option value="c9">Parfums &amp; Soins Luxe</option>
+          <option value="c10">Bébé &amp; Enfants</option>
+          <option value="c11">Perruques &amp; Mèches</option>
+          <option value="c12">Lingerie, Nuit &amp; Rideau</option>
+          <option value="c13">Santé &amp; Bien-être Femme</option>
+          <option value="c14">Friperie &amp; Habit de Travail</option>
+          <option value="c15">Tissus &amp; Pagnes</option>
+          <option value="c16">Occasion d'Europe</option>
+          <option value="c17">Pâtisserie</option>
+          <option value="c18">Veste &amp; Chaussures de Luxe</option>
+          <option value="c19">Plastique</option>
+          <option value="c20">Électronique</option>
+          <option value="c21">Grossiste Œufs</option>
+          <option value="c22">Anniversaire &amp; Objet Jetable</option>
+        </optgroup>
+      </select>
+      <textarea id="indepDescription" placeholder="Description de votre activité *"></textarea>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:13px;color:#555;font-weight:600;display:block;margin-bottom:8px;">📸 Photo de profil</label>
+        <label for="indepPhotoFile" style="display:flex;align-items:center;gap:6px;background:#f0f7ff;border:2px dashed #1677FF;padding:12px;border-radius:12px;cursor:pointer;color:#1677FF;font-weight:600;font-size:13px;justify-content:center;">
+          🖼️ Choisir une photo
+        </label>
+        <input type="file" id="indepPhotoFile" accept="image/*" style="display:none;" onchange="previewIndepPhoto(this)">
+        <img id="indepPhotoPreview" style="display:none;width:80px;height:80px;border-radius:50%;object-fit:cover;margin-top:8px;border:3px solid #1677FF;">
+      </div>
+      <button class="primary-btn" onclick="registerIndependant()">Continuer →</button>
+      <button class="secondary-btn" onclick="goHome()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PIN INDÉPENDANT ========== -->
+<div class="page" id="pinIndependantPage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('registerIndependantPage')">←</button>
+      <div><div class="section-title">Créer votre PIN</div></div>
+    </div>
+    <div class="form-card">
+      <div class="info-box">Votre PIN sécurise votre compte. Minimum 4 chiffres.</div>
+      <input type="password" id="pinIndepInput" placeholder="Votre PIN (minimum 4 chiffres)" maxlength="6" inputmode="numeric">
+      <input type="password" id="pinIndepConfirmInput" placeholder="Confirmer votre PIN" maxlength="6" inputmode="numeric">
+      <button class="primary-btn" onclick="validateIndependantPin()">✅ Créer mon compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE VIP ========== -->
+<div class="page" id="vipRegisterPage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <div><div class="section-title">Compte VIP</div></div>
+    </div>
+    <div class="form-card">
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-size:48px;">👑</div>
+        <h2 style="color:#722ed1;margin:8px 0 4px;">Vendeur &amp; Grossiste VIP</h2>
+        <p style="font-size:13px;color:#888;">Moboro gère tout pour vous</p>
+      </div>
+      <div style="background:#f9f0ff;border:1px solid #d3adf7;padding:14px;border-radius:14px;margin-bottom:14px;font-size:13px;line-height:1.8;">
+        <strong>✨ Ce que Moboro fait pour vous :</strong><br>
+        • Publication de vos produits &amp; photos<br>
+        • Premier contact avec les clients<br>
+        • Gestion de vos promotions<br>
+        • Mise à jour de votre boutique<br>
+        • Support prioritaire 7j/7
+      </div>
+      <div style="background:#f9f9f9;padding:14px;border-radius:14px;margin-bottom:16px;font-size:13px;line-height:1.8;">
+        💰 <strong>Tarifs VIP :</strong><br>
+        • Vendeur VIP : <strong>5 000 FCFA/mois</strong><br>
+        • Grossiste &amp; Importateur VIP : <strong>10 000 FCFA/mois</strong>
+      </div>
+      <div class="info-box">
+        📋 En cliquant sur le bouton ci-dessous, vous acceptez les conditions d'utilisation et serez redirigé vers WhatsApp pour contacter l'administration Moboro qui créera votre compte.
+      </div>
+      <a id="vipWhatsAppBtn" href="#" target="_blank" class="green-btn" onclick="openVipWhatsApp(event)" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Contacter Moboro sur WhatsApp
+      </a>
+      <button class="secondary-btn" onclick="goHome()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE AGENT LIVREUR — INSCRIPTION ========== -->
+<div class="page" id="deliveryAgentRegisterPage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <div><div class="section-title">Devenir Agent Livreur</div></div>
+    </div>
+    <div class="form-card">
+      <div class="info-box" style="background:#fff7e6;border:1px solid #ffd591;">
+        <strong>🚚 Agent de livraison Moboro</strong><br><br>
+        Rejoignez notre réseau de livreurs et gagnez de l'argent en livrant les commandes des clients.<br><br>
+        💰 Abonnement : <strong>1 500 FCFA/mois</strong>
+      </div>
+      <h2>Vos informations</h2>
+      <input type="text" id="livreurFullName" placeholder="Nom complet *">
+      <input type="tel" id="livreurPhone" placeholder="Téléphone *">
+      <select id="livreurVille" style="width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #e8e8e8;margin-bottom:10px;font-size:14px;outline:none;background:#fafafa;">
+        <option value="">Choisir votre ville *</option>
+        <option value="Brazzaville">Brazzaville</option>
+        <option value="Pointe-Noire">Pointe-Noire</option>
+        <option value="Dolisie">Dolisie</option>
+        <option value="Nkayi">Nkayi</option>
+        <option value="Oyo">Oyo</option>
+        <option value="Bétou">Bétou</option>
+        <option value="Ouesso">Ouesso</option>
+        <option value="Impfondo">Impfondo</option>
+        <option value="Madingou">Madingou</option>
+        <option value="Owando">Owando</option>
+        <option value="Sibiti">Sibiti</option>
+        <option value="Mossaka">Mossaka</option>
+        <option value="Gamboma">Gamboma</option>
+        <option value="Djambala">Djambala</option>
+        <option value="Makoua">Makoua</option>
+        <option value="Kinkala">Kinkala</option>
+        <option value="Ewo">Ewo</option>
+        <option value="Dongou">Dongou</option>
+      </select>
+      <input type="text" id="livreurQuartier" placeholder="Quartier(s) de livraison * (ex: Moungali, Poto-Poto)">
+      <input type="text" id="livreurMoyen" placeholder="Moyen de transport * (moto, vélo, voiture...)">
+      <textarea id="livreurDescription" placeholder="Décrivez votre service (horaires, zones couvertes...)" style="min-height:80px;"></textarea>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:13px;color:#555;font-weight:600;display:block;margin-bottom:8px;">📸 Photo de profil</label>
+        <label for="livreurPhotoFile" style="display:flex;align-items:center;gap:6px;background:#fff7e6;border:2px dashed #fa8c16;padding:12px;border-radius:12px;cursor:pointer;color:#fa8c16;font-weight:600;font-size:13px;justify-content:center;">
+          🖼️ Choisir une photo
+        </label>
+        <input type="file" id="livreurPhotoFile" accept="image/*" style="display:none;" onchange="previewLivreurPhoto(this)">
+        <img id="livreurPhotoPreview" style="display:none;width:80px;height:80px;border-radius:50%;object-fit:cover;margin-top:8px;border:3px solid #fa8c16;">
+      </div>
+      <button class="primary-btn" style="background:linear-gradient(135deg,#fa8c16,#d46b08);" onclick="registerDeliveryAgent()">🚚 S'inscrire comme livreur</button>
+      <button class="secondary-btn" onclick="goHome()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE CONTACTER UN LIVREUR ========== -->
+<div class="page" id="contactDeliveryPage">
+  <div class="register-page">
+    <div class="page-header">
+      <button class="back-btn" onclick="goBack()">←</button>
+      <div><div class="section-title">Contacter un Livreur</div></div>
+    </div>
+    <div style="padding:0 0 14px;">
+      <!-- Filtre ville -->
+      <div style="padding:0 0 10px;">
+        <select id="deliveryVilleFilter" onchange="loadDeliveryAgentsByVille(this.value)"
+          style="width:100%;padding:13px 14px;border-radius:14px;border:1.5px solid #e8e8e8;font-size:14px;outline:none;background:#fafafa;">
+          <option value="">🏙️ Choisir une ville</option>
+          <option value="Brazzaville">Brazzaville</option>
+          <option value="Pointe-Noire">Pointe-Noire</option>
+          <option value="Dolisie">Dolisie</option>
+          <option value="Nkayi">Nkayi</option>
+          <option value="Oyo">Oyo</option>
+          <option value="Bétou">Bétou</option>
+          <option value="Ouesso">Ouesso</option>
+          <option value="Impfondo">Impfondo</option>
+          <option value="Madingou">Madingou</option>
+          <option value="Owando">Owando</option>
+          <option value="Sibiti">Sibiti</option>
+          <option value="Mossaka">Mossaka</option>
+          <option value="Gamboma">Gamboma</option>
+          <option value="Djambala">Djambala</option>
+          <option value="Makoua">Makoua</option>
+          <option value="Kinkala">Kinkala</option>
+          <option value="Ewo">Ewo</option>
+          <option value="Dongou">Dongou</option>
+        </select>
+      </div>
+      <div id="deliveryAgentsList">
+        <p style="text-align:center;padding:30px;color:#888;font-size:14px;">Choisissez une ville pour voir les livreurs disponibles</p>
+      </div>
     </div>
   </div>
 </div>
@@ -1359,18 +1793,23 @@ header p { font-size: 12px; opacity: .80; }
     <p style="font-size:15px;line-height:1.6;margin-bottom:20px;color:#555;">
       Payez votre abonnement pour vous connecter à votre compte.
     </p>
-    <div style="background:#fff4d9;padding:14px;border-radius:14px;margin-bottom:20px;font-size:13px;line-height:1.6;">
-      💳 <strong>Choisissez votre abonnement,
-      payez et envoyez l'identifiant de la transaction ou la capture d'écran à l'administration.</strong>
+    <div style="background:#fff4d9;padding:14px;border-radius:14px;margin-bottom:20px;font-size:13px;line-height:1.8;">
+      💳 <strong>Choisissez votre abonnement :</strong><br>
+      • Vendeur indépendant : <strong>2 000 FCFA/mois</strong><br>
+      • Grossiste indépendant : <strong>5 000 FCFA/mois</strong><br>
+      • Vendeur VIP : <strong>5 000 FCFA/mois</strong><br>
+      • Grossiste VIP : <strong>10 000 FCFA/mois</strong><br>
+      • Agent livreur : <strong>1 500 FCFA/mois</strong><br><br>
+      Payez et envoyez la capture d'écran à l'administration.
     </div>
 
-<!-- Bouton 1750 FCFA / mois -->
-<a href="tel:*105*6*535182*1750%23"
+<a href="https://wa.me/242050672009?text=Bonjour%20Moboro%2C%20je%20veux%20payer%20mon%20abonnement"
+   target="_blank"
    style="display:flex;align-items:center;justify-content:center;gap:10px;
           background:linear-gradient(135deg,#52c41a,#389e0d);
           color:white;padding:15px;border-radius:14px;
           font-weight:700;font-size:16px;text-decoration:none;margin-bottom:16px;">
-  📆 1750FCFA/Mois
+  💬 Payer via WhatsApp Admin
 </a>
 
     <button onclick="document.getElementById('blockedModal').style.display='none'"
@@ -2909,242 +3348,6 @@ async function openSellerProductsFromSearch(sellerId) {
   await openSellerProducts(sellerId, type);
 }
 
-// ==================== ADMIN.JS ====================
-
-// Connexion admin — vérification sécurisée via Supabase
-async function adminLogin() {
-  const code = document.getElementById('adminCode').value.trim();
-  const pin  = document.getElementById('adminPin').value.trim();
-
-  if (!code || !pin) {
-    showToast('Remplissez tous les champs', 'error');
-    return;
-  }
-
-  try {
-    const { data, error } = await db
-      .from('admin_credentials')
-      .select('id')
-      .eq('code',     code)
-      .eq('pin_hash', hashPin(pin))
-    .maybeSingle();
-
-    if (error || !data) {
-      showToast('Identifiants admin incorrects', 'error');
-      return;
-    }
-
-    isAdmin = true;
-    showPage('adminDashboard');
-    loadAdminStats();
-
-  } catch (e) {
-    console.error('adminLogin error:', e);
-    showToast('Erreur de connexion', 'error');
-  }
-}
-
-// Charger stats admin
-async function loadAdminStats() {
-  // Nombre de vendeurs
-  const { count: totalSellers } = await db.from(TABLES.SELLERS)
-    .select('*', { count: 'exact', head: true });
-
-  // Vendeurs aujourd'hui
-  const today = new Date().toISOString().split('T')[0];
-  const { count: todaySellers } = await db.from(TABLES.SELLERS)
-    .select('*', { count: 'exact', head: true })
-    .gte('created_at', today);
-
-  // Visites
-  const { count: todayVisits } = await db.from(TABLES.VISITORS)
-    .select('*', { count: 'exact', head: true })
-    .gte('date', today);
-
-  const { count: totalVisits } = await db.from(TABLES.VISITORS)
-    .select('*', { count: 'exact', head: true });
-    
-  // Commandes
-  const { count: todayOrders } = await db.from(TABLES.ORDERS)
-    .select('*', { count: 'exact', head: true })
-    .gte('created_at', today);
-
-  const { count: totalOrders } = await db.from(TABLES.ORDERS)
-    .select('*', { count: 'exact', head: true });
-
-  document.getElementById('statTotalSellers').innerText = totalSellers || 0;
-  document.getElementById('statTodaySellers').innerText = todaySellers || 0;
-  document.getElementById('statTodayVisits').innerText = todayVisits || 0;
-  document.getElementById('statTotalVisits').innerText = totalVisits || 0;
-  document.getElementById('statTodayOrders').innerText = todayOrders || 0;
-  document.getElementById('statTotalOrders').innerText = totalOrders || 0;
-}
-
-// Charger liste vendeurs admin
-async function loadSellersList() {
-  const ville = document.getElementById('filterVille').value;
-  const quartier = document.getElementById('filterQuartier').value.trim();
-
-  let query = db.from(TABLES.SELLERS).select('*').order('created_at', { ascending: false });
-  if (ville) query = query.ilike('ville', `%${ville}%`);
-  if (quartier) query = query.ilike('quartier', `%${quartier}%`);
-
-  const { data: sellers } = await query;
-
-  const tbody = document.getElementById('sellersTableBody');
-  if (!sellers || sellers.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;">Aucun vendeur.</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = sellers.map(s => {
-    const dynamisme = getDynamisme(s.last_published);
-    const dynamColor = { vert: '#52c41a', jaune: '#faad14', rouge: '#ff4d4f', noir: '#333' }[dynamisme];
-
-    return `
-      <tr>
-        <td>${s.code}</td>
-        <td>${s.full_name}<br><small>${s.ville} - ${s.quartier}</small></td>
-        <td>${ALL_CATEGORIES[s.category] || s.category}</td>
-        <td><span style="color:${dynamColor};font-weight:700;">● ${dynamisme}</span></td>
-        <td><span style="color:${s.subscription_status === 'en_cours' ? '#52c41a' : '#ff4d4f'}">
-          ${s.subscription_status === 'en_cours' ? 'En cours' : 'Expiré'}
-        </span></td>
-        <td>
-          <button onclick="toggleBlock('${s.id}', ${s.is_blocked})"
-            style="background:${s.is_blocked ? '#52c41a' : '#ff4d4f'};color:white;border:none;padding:5px 10px;border-radius:8px;cursor:pointer;">
-            ${s.is_blocked ? 'Débloquer' : 'Bloquer'}
-          </button>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-// Calculer dynamisme
-function getDynamisme(lastPublished) {
-  if (!lastPublished) return 'noir';
-  const diff = (new Date() - new Date(lastPublished)) / (1000 * 60 * 60 * 24);
-  if (diff <= 1) return 'vert';
-  if (diff <= 3) return 'jaune';
-  if (diff <= 7) return 'rouge';
-  return 'noir';
-}
-
-// Supprimer compte vendeur définitivement
-async function deleteSellerAccount() {
-  const code = document.getElementById('deleteSellerCode').value.trim().toUpperCase();
-
-  if (!code) {
-    showToast('Entrez un code vendeur', 'error');
-    return;
-  }
-
-  // Vérifier que le vendeur existe
-  const { data: seller, error } = await db.from(TABLES.SELLERS)
-    .select('*').eq('code', code).single();
-
-  if (error || !seller) {
-    showToast('Code vendeur introuvable', 'error');
-    return;
-  }
-
-  if (!confirm(`Supprimer définitivement le compte de ${seller.full_name} (${code}) ?\n\nCette action est irréversible !`)) {
-    return;
-  }
-
-  try {
-    // Supprimer les produits du vendeur
-    await db.from(TABLES.PRODUCTS).delete().eq('seller_id', seller.id);
-    // Supprimer les promos du vendeur
-    await db.from(TABLES.PROMOS).delete().eq('seller_id', seller.id);
-    // Supprimer les commandes du vendeur
-    await db.from(TABLES.ORDERS).delete().eq('seller_id', seller.id);
-    // Supprimer le compte vendeur
-    await db.from(TABLES.SELLERS).delete().eq('id', seller.id);
-
-    document.getElementById('deleteSellerCode').value = '';
-    showToast(`Compte ${code} supprimé définitivement`, 'success');
-    loadAdminStats();
-  } catch (e) {
-    showToast('Erreur lors de la suppression', 'error');
-    console.error(e);
-  }
-}
-async function toggleBlock(sellerId, isBlocked) {
-  const action = isBlocked ? 'débloquer' : 'bloquer';
-  if (!confirm(`Voulez-vous ${action} ce vendeur ?`)) return;
-
-  await db.from(TABLES.SELLERS).update({ is_blocked: !isBlocked }).eq('id', sellerId);
-  showToast(`Vendeur ${isBlocked ? 'débloqué' : 'bloqué'}`, 'success');
-  loadSellersList();
-}
-
-// Charger positions par catégorie
-async function loadPositions(catId) {
-  const { data: sellers } = await db.from(TABLES.SELLERS)
-    .select('*').eq('category', catId).eq('is_blocked', false)
-    .order('position', { ascending: true });
-
-  const list = document.getElementById('positionsList');
-  if (!sellers || sellers.length === 0) {
-    list.innerHTML = '<p style="padding:10px;color:#888;">Aucun vendeur.</p>';
-    return;
-  }
-
-  list.innerHTML = sellers.map((s, i) => `
-    <div class="position-item">
-      <span class="pos-number">#${i + 1}</span>
-      <span class="pos-name">${s.full_name} (${s.code})</span>
-      <div class="pos-controls">
-        <button onclick="moveUp('${s.id}', '${catId}')" ${i === 0 ? 'disabled' : ''}>▲</button>
-        <button onclick="moveDown('${s.id}', '${catId}')" ${i === sellers.length - 1 ? 'disabled' : ''}>▼</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-// Monter position
-async function moveUp(sellerId, catId) {
-  const { data: sellers } = await db.from(TABLES.SELLERS)
-    .select('id, position').eq('category', catId).order('position');
-
-  const idx = sellers.findIndex(s => s.id === sellerId);
-  if (idx <= 0) return;
-
-  const current = sellers[idx];
-  const prev = sellers[idx - 1];
-
-const [r1, r2] = await Promise.all([
-  db.from(TABLES.SELLERS).update({ position: prev.position }).eq('id', current.id),
-  db.from(TABLES.SELLERS).update({ position: current.position }).eq('id', prev.id)
-]);
-if (r1.error || r2.error) { showToast('Erreur déplacement', 'error'); return; }
-
-  loadPositions(catId);
-}
-
-// Descendre position
-async function moveDown(sellerId, catId) {
-  const { data: sellers } = await db.from(TABLES.SELLERS)
-    .select('id, position').eq('category', catId).order('position');
-
-  const idx = sellers.findIndex(s => s.id === sellerId);
-  if (idx >= sellers.length - 1) return;
-
-  const current = sellers[idx];
-  const next    = sellers[idx + 1];
-
-  // ✅ CORRECTION : Promise.all atomique — évite corruption si 2e update échoue
-  const [r1, r2] = await Promise.all([
-    db.from(TABLES.SELLERS).update({ position: next.position    }).eq('id', current.id),
-    db.from(TABLES.SELLERS).update({ position: current.position }).eq('id', next.id)
-  ]);
-  if (r1.error || r2.error) { showToast('Erreur déplacement', 'error'); return; }
-
-  loadPositions(catId);
-}
-
 // ==================== APP.JS ====================
 
 const cache = { sellers: {}, products: {}, ttl: 5 * 60 * 1000 };
@@ -3340,8 +3543,712 @@ async function initBanner() {
   });
 }
 
+// ================================================================
+// TOUTES LES PROMOS (A + B)
+// ================================================================
+async function loadAllPromos() {
+  document.getElementById('promosTitle').innerText = '🔥 Toutes les Promotions';
+  showPage('promosPage');
+
+  const { data: promos, error } = await db.from(TABLES.PROMOS)
+    .select('*').eq('is_active', true)
+    .order('created_at', { ascending: false });
+
+  const list = document.getElementById('promosList');
+  if (!promos || promos.length === 0) {
+    list.innerHTML = '<p style="text-align:center;padding:20px;color:#888;">Aucune promotion disponible.</p>';
+    return;
+  }
+  list.innerHTML = promos.map(p => `
+    <div class="promo-card">
+      <img src="${escapeHtml(p.image)}" onerror="this.src='https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=600'">
+      <div class="promo-content">
+        <h3>${escapeHtml(p.name)}</h3>
+        <p class="promo-seller">Vendeur: ${escapeHtml(p.seller_name)}</p>
+        <div class="promo-prices-display">
+          <span class="old-price">${formatPrice(p.original_price)} FCFA</span>
+          <span class="new-price">${formatPrice(p.promo_price)} FCFA</span>
+          <span class="discount">-${Math.round((1 - p.promo_price / p.original_price) * 100)}%</span>
+        </div>
+        <a href="https://wa.me/${p.seller_phone}?text=Bonjour, je suis intéressé(e) par: ${encodeURIComponent(p.name)}"
+           target="_blank" class="whatsapp-promo-btn">Commander via WhatsApp</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ================================================================
+// INSCRIPTION VIP
+// ================================================================
+function openVIPRegister() {
+  showPage('vipRegisterPage');
+}
+
+function openVipWhatsApp(e) {
+  e.preventDefault();
+  const msg = encodeURIComponent(
+    'Bonjour Moboro 👋\n\nJe souhaite créer un compte VIP (Vendeur/Grossiste).\nPouvez-vous m\'aider à configurer mon espace ?\n\nMerci !'
+  );
+  window.open(`https://wa.me/${ADMIN_PHONE}?text=${msg}`, '_blank');
+}
+
+// ================================================================
+// INSCRIPTION INDÉPENDANT
+// ================================================================
+let _indepAccountType = 'vendeur'; // 'vendeur' ou 'grossiste'
+
+function openIndependantChoice() {
+  showPage('independantChoicePage');
+}
+
+function openIndependantVendeur() {
+  _indepAccountType = 'vendeur';
+  document.getElementById('registerIndependantTitle').innerText = 'Vendeur Indépendant';
+  // Filtrer catégorie B seulement
+  const sel = document.getElementById('indepCategory');
+  Array.from(sel.options).forEach(o => {
+    if (o.value && Object.keys(CATEGORIES_A).includes(o.value)) {
+      o.style.display = 'none';
+    } else {
+      o.style.display = '';
+    }
+  });
+  showPage('termsIndependantPage');
+}
+
+function openIndependantGrossiste() {
+  _indepAccountType = 'grossiste';
+  document.getElementById('registerIndependantTitle').innerText = 'Grossiste & Importateur Indépendant';
+  // Filtrer catégorie A seulement
+  const sel = document.getElementById('indepCategory');
+  Array.from(sel.options).forEach(o => {
+    if (o.value && Object.keys(CATEGORIES_B).includes(o.value)) {
+      o.style.display = 'none';
+    } else {
+      o.style.display = '';
+    }
+  });
+  showPage('termsIndependantPage');
+}
+
+function acceptIndependantTerms() {
+  showPage('registerIndependantPage');
+}
+
+function previewIndepPhoto(input) {
+  const preview = document.getElementById('indepPhotoPreview');
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+  reader.readAsDataURL(file);
+}
+
+async function registerIndependant() {
+  const fullName    = document.getElementById('indepFullName').value.trim();
+  const phone       = document.getElementById('indepPhone').value.trim();
+  const quartier    = document.getElementById('indepQuartier').value.trim();
+  const address     = document.getElementById('indepAddress').value.trim();
+  const ville       = document.getElementById('indepVille').value.trim();
+  const category    = document.getElementById('indepCategory').value;
+  const description = document.getElementById('indepDescription').value.trim();
+  const photoFile   = document.getElementById('indepPhotoFile')?.files[0];
+
+  if (!fullName || !phone || !quartier || !address || !ville || !category || !description) {
+    showToast('Veuillez remplir tous les champs', 'error');
+    return;
+  }
+
+  const { data: blocked } = await db.from('blocked_phones')
+    .select('id').eq('phone', phone).maybeSingle();
+  if (blocked) { showToast('Ce numéro est banni.', 'error'); return; }
+
+  const { data: existing } = await db.from(TABLES.SELLERS)
+    .select('id').eq('phone', phone).maybeSingle();
+  if (existing) { showToast('Ce numéro a déjà un compte.', 'error'); return; }
+
+  let photoUrl = '';
+  if (photoFile) {
+    showToast('Upload photo...', 'info');
+    photoUrl = await uploadPhoto(photoFile, 'sellers') || '';
+  }
+
+  window._pendingIndepData = { fullName, phone, quartier, address, ville, category, description, photoUrl, accountType: _indepAccountType };
+  showPage('pinIndependantPage');
+}
+
+async function validateIndependantPin() {
+  const pin        = document.getElementById('pinIndepInput').value.trim();
+  const pinConfirm = document.getElementById('pinIndepConfirmInput').value.trim();
+
+  if (pin.length < 4) { showToast('PIN trop court (minimum 4 chiffres)', 'error'); return; }
+  if (pin !== pinConfirm) { showToast('Les PINs ne correspondent pas', 'error'); return; }
+
+  const data = window._pendingIndepData;
+  if (!data) { showPage('registerIndependantPage'); return; }
+
+  try {
+    const { count } = await db.from(TABLES.SELLERS).select('*', { count: 'exact', head: true });
+    const sellerCode = generateSellerCode(count || 0);
+
+    const newSeller = {
+      code:                sellerCode,
+      full_name:           data.fullName,
+      phone:               data.phone,
+      quartier:            data.quartier,
+      address:             data.address,
+      ville:               data.ville,
+      category:            data.category,
+      description:         data.description,
+      pin_hash:            hashPin(pin),
+      photo:               data.photoUrl,
+      is_blocked:          false,
+      is_active:           true,
+      position:            0,
+      dynamisme_score:     0,
+      account_type:        'independant_' + data.accountType,
+      subscription_status: 'en_cours',
+      created_at:          new Date().toISOString()
+    };
+
+    const { data: created, error } = await db.from(TABLES.SELLERS).insert(newSeller).select().single();
+    if (error || !created) { showToast('Erreur création du compte', 'error'); return; }
+
+    // Email admin — même Edge Function que l'inscription vendeur standard
+    await notifyAdminEmail({ seller: created });
+
+    document.getElementById('notifName').innerText = data.fullName;
+    document.getElementById('notifCode').innerText = sellerCode;
+    showPage('registerSuccessPage');
+    window._pendingIndepData = null;
+
+  } catch (e) {
+    showToast('Erreur: ' + e.message, 'error');
+  }
+}
+
+// ================================================================
+// AGENT DE LIVRAISON
+// ================================================================
+function openDeliveryAgentRegister() {
+  showPage('deliveryAgentRegisterPage');
+}
+
+function previewLivreurPhoto(input) {
+  const preview = document.getElementById('livreurPhotoPreview');
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+  reader.readAsDataURL(file);
+}
+
+async function registerDeliveryAgent() {
+  const fullName    = document.getElementById('livreurFullName').value.trim();
+  const phone       = document.getElementById('livreurPhone').value.trim();
+  const ville       = document.getElementById('livreurVille').value.trim();
+  const quartier    = document.getElementById('livreurQuartier').value.trim();
+  const moyen       = document.getElementById('livreurMoyen').value.trim();
+  const description = document.getElementById('livreurDescription').value.trim();
+  const photoFile   = document.getElementById('livreurPhotoFile')?.files[0];
+
+  if (!fullName || !phone || !ville || !quartier || !moyen) {
+    showToast('Remplissez tous les champs obligatoires', 'error');
+    return;
+  }
+
+  const { data: existing } = await db.from('delivery_agents')
+    .select('id').eq('phone', phone).maybeSingle();
+  if (existing) { showToast('Ce numéro est déjà inscrit comme livreur.', 'error'); return; }
+
+  let photoUrl = '';
+  if (photoFile) {
+    showToast('Upload photo...', 'info');
+    photoUrl = await uploadPhoto(photoFile, 'sellers') || '';
+  }
+
+  try {
+    const { error } = await db.from('delivery_agents').insert({
+      full_name:   fullName,
+      phone:       phone,
+      ville:       ville,
+      quartier:    quartier,
+      moyen:       moyen,
+      description: description,
+      photo:       photoUrl,
+      is_active:   true,
+      is_blocked:  false,
+      subscription_status: 'en_cours',
+      created_at:  new Date().toISOString()
+    });
+
+    if (error) { showToast('Erreur inscription: ' + error.message, 'error'); return; }
+
+    // Email admin via Edge Function — payload adapté pour livreur
+    await notifyAdminEmail({ seller: {
+      full_name:    fullName,
+      phone:        phone,
+      ville:        ville,
+      quartier:     quartier,
+      category:     'Agent de Livraison',
+      description:  `Moyen: ${moyen}. ${description}`,
+      account_type: 'livreur',
+      code:         '(livreur — pas de code vendeur)'
+    }});
+
+    showToast('Inscription livreur réussie ! ✓', 'success');
+
+    // Notifier admin WhatsApp
+    const msg = encodeURIComponent(
+      `🚚 NOUVEL AGENT LIVREUR\n\nNom: ${fullName}\nTél: ${phone}\nVille: ${ville}\nQuartier(s): ${quartier}\nMoyen: ${moyen}`
+    );
+    setTimeout(() => window.open(`https://wa.me/${ADMIN_PHONE}?text=${msg}`, '_blank'), 1000);
+
+    goHome();
+  } catch (e) {
+    showToast('Erreur: ' + e.message, 'error');
+  }
+}
+
+// ================================================================
+// CONTACTER UN LIVREUR — liste par ville puis quartier
+// ================================================================
+function openContactDelivery() {
+  showPage('contactDeliveryPage');
+  document.getElementById('deliveryAgentsList').innerHTML =
+    '<p style="text-align:center;padding:30px;color:#888;font-size:14px;">Choisissez une ville pour voir les livreurs disponibles</p>';
+  document.getElementById('deliveryVilleFilter').value = '';
+}
+
+async function loadDeliveryAgentsByVille(ville) {
+  const list = document.getElementById('deliveryAgentsList');
+  if (!ville) {
+    list.innerHTML = '<p style="text-align:center;padding:30px;color:#888;font-size:14px;">Choisissez une ville</p>';
+    return;
+  }
+
+  list.innerHTML = '<div class="loading">Chargement...</div>';
+
+  try {
+    const { data: agents, error } = await db.from('delivery_agents')
+      .select('*')
+      .ilike('ville', `%${ville}%`)
+      .eq('is_active', true)
+      .eq('is_blocked', false)
+      .order('created_at', { ascending: false });
+
+    if (error || !agents || agents.length === 0) {
+      list.innerHTML = '<p style="text-align:center;padding:20px;color:#888;">Aucun livreur disponible dans cette ville pour le moment.</p>';
+      return;
+    }
+
+    // Grouper par quartier
+    const byQuartier = {};
+    agents.forEach(a => {
+      const q = a.quartier || 'Autre';
+      q.split(',').map(s => s.trim()).forEach(qq => {
+        if (!byQuartier[qq]) byQuartier[qq] = [];
+        byQuartier[qq].push(a);
+      });
+    });
+
+    let html = `<p style="font-size:13px;color:#888;padding:4px 0 12px;">${agents.length} livreur(s) à ${ville}</p>`;
+
+    Object.entries(byQuartier).forEach(([quartier, agentsQ]) => {
+      html += `
+        <div style="margin-bottom:16px;">
+          <div style="font-size:13px;font-weight:700;color:#1677FF;padding:8px 0 6px;border-bottom:2px solid #e8e8e8;margin-bottom:8px;">
+            📍 ${escapeHtml(quartier)}
+          </div>
+          ${agentsQ.map(a => `
+            <div style="display:flex;align-items:center;gap:12px;background:white;padding:12px;border-radius:14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.07);">
+              <img src="${escapeHtml(a.photo) || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200'}"
+                style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #fa8c16;flex-shrink:0;"
+                onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200'">
+              <div style="flex:1;">
+                <div style="font-size:15px;font-weight:700;">${escapeHtml(a.full_name)}</div>
+                <div style="font-size:12px;color:#fa8c16;font-weight:600;">🛵 ${escapeHtml(a.moyen || '')}</div>
+                ${a.description ? `<div style="font-size:12px;color:#666;margin-top:2px;">${escapeHtml(a.description)}</div>` : ''}
+                ${getStarHtml(a.id, 'livreur', a.stars || 0, a.badge || null)}
+              </div>
+              <a href="https://wa.me/${a.phone}?text=${encodeURIComponent('Bonjour ' + a.full_name + ', je voudrais une livraison depuis Marché Moboro.')}"
+                target="_blank"
+                style="display:flex;align-items:center;justify-content:center;background:#25D366;color:white;border:none;padding:10px 12px;border-radius:12px;font-weight:700;font-size:13px;text-decoration:none;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </a>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    });
+
+    list.innerHTML = html;
+  } catch (e) {
+    list.innerHTML = '<p style="text-align:center;padding:20px;color:#888;">Erreur de chargement.</p>';
+  }
+}
+
+// ================================================================
+// escapeHtml (au cas où sellers.js non chargé dans index.html)
+// ================================================================
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ================================================================
+// NOTIFICATION EMAIL ADMIN — Edge Function Supabase → Brevo
+// Même système que l'inscription vendeur existante (bright-service)
+// Appel silencieux : ne bloque jamais l'inscription
+// ================================================================
+async function notifyAdminEmail(payload) {
+  try {
+    const res = await fetch(
+      'https://frvzrorqndozglxczatv.supabase.co/functions/v1/bright-service',
+      {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload)
+      }
+    );
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      console.error('❌ notifyAdminEmail error:', d);
+    } else {
+      console.log('✅ Email admin envoyé');
+    }
+  } catch(e) {
+    console.error('❌ notifyAdminEmail network error:', e);
+  }
+}
+
+// ================================================================
+// DROPDOWN VILLE CUSTOM (remplace le <select> natif Android)
+// ================================================================
+let _villeDropdownOpen = false;
+
+function toggleVilleDropdown(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('villeDropdownMenu');
+  _villeDropdownOpen = !_villeDropdownOpen;
+  menu.style.display = _villeDropdownOpen ? 'block' : 'none';
+}
+
+function selectVille(value, label) {
+  document.getElementById('searchVilleFilter').value = value;
+  document.getElementById('villeDropdownLabel').innerText = label.length > 8 ? label.substring(0,8)+'…' : label;
+  document.getElementById('villeDropdownMenu').style.display = 'none';
+  _villeDropdownOpen = false;
+  handleSearch();
+}
+
+// Fermer si clic ailleurs
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('villeDropdown')?.contains(e.target)) {
+    document.getElementById('villeDropdownMenu').style.display = 'none';
+    _villeDropdownOpen = false;
+  }
+});
+
 function openAdmin() {
   showPage('adminLoginPage');
+}
+
+// ================================================================
+// VIP MANAGER — Espace VIP dans index.html
+// Code & identifiants SÉPARÉS de admin.html
+// ================================================================
+
+// Identifiant gestionnaire VIP (vérifié dans Supabase table vip_managers)
+let _vipManagerConnected = false;
+
+async function vipManagerLogin() {
+  const code = document.getElementById('vipManagerCode').value.trim().toUpperCase();
+  const pin  = document.getElementById('vipManagerPin').value.trim();
+
+  if (!code || !pin) { showToast('Remplissez tous les champs', 'error'); return; }
+
+  try {
+    // Vérification dans table dédiée vip_managers (séparée de admin_credentials)
+    const { data, error } = await db.from('vip_managers')
+      .select('id, code')
+      .eq('code', code)
+      .eq('pin_hash', btoa(pin + '_vip_mbr_2025'))
+      .maybeSingle();
+
+    if (error || !data) {
+      showToast('Code ou PIN VIP incorrect', 'error'); return;
+    }
+
+    _vipManagerConnected = true;
+    sessionStorage.setItem('vip_manager', code);
+    showToast('Bienvenue dans l\'espace VIP 👑', 'success');
+    showPage('adminDashboard');
+
+  } catch(e) {
+    showToast('Erreur de connexion', 'error');
+  }
+}
+
+function vipManagerLogout() {
+  _vipManagerConnected = false;
+  sessionStorage.removeItem('vip_manager');
+  goHome();
+}
+
+// Catégories pour formulaires VIP
+const VIP_CATEGORIES_GROSSISTE = {
+  'ig':           'Importateurs & Grossistes',
+  'immo':         'Immobilier',
+  'coiffure':     'Grand Salon de Coiffure',
+  'hotel':        'Hôtel, Jardin & Tourisme',
+  'deco-mariage': 'Décoration Mariage',
+  'menage':       'Service de Ménage',
+  'demenagement': 'Déménagement',
+  'auto':         'Automobile & Dépannage',
+  'couture':      'Couture & Styliste',
+  'pharmacie':    'Pharmacie',
+  'construction': 'Matériaux de Construction',
+  'alimentation': 'Alimentation'
+};
+
+const VIP_CATEGORIES_VENDEUR = { ...CATEGORIES_A, ...CATEGORIES_B };
+
+let _vipRegType = 'vendeur';
+
+function openVIPLoginType(type) {
+  // Redirige vers la liste maintenant
+  openVIPList(type);
+}
+
+async function openVIPList(type) {
+  if (!_vipManagerConnected) { showPage('adminLoginPage'); return; }
+
+  const title = type === 'grossiste'
+    ? '🏭 Importateurs & Grossistes VIP'
+    : '🛍️ Vendeurs VIP';
+  document.getElementById('vipListTitle').innerText = title;
+  document.getElementById('vipAccountsList').innerHTML = '<div class="loading">Chargement...</div>';
+  showPage('vipListPage');
+
+  try {
+    const { data: sellers, error } = await db.from(TABLES.SELLERS)
+      .select('*')
+      .eq('account_type', 'vip_' + type)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    const div = document.getElementById('vipAccountsList');
+
+    if (!sellers || sellers.length === 0) {
+      div.innerHTML = `<p style="text-align:center;padding:30px;color:#888;font-size:14px;">
+        Aucun compte ${type === 'grossiste' ? 'Importateur & Grossiste' : 'Vendeur'} VIP pour le moment.
+      </p>`;
+      return;
+    }
+
+    div.innerHTML = sellers.map(s => `
+      <div style="background:white;border-radius:16px;padding:14px;margin:0 0 12px;
+                  box-shadow:0 2px 10px rgba(0,0,0,.08);border-left:4px solid #722ed1;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <img src="${s.photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100'}"
+            style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #722ed1;flex-shrink:0;"
+            onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100'">
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:15px;font-weight:700;color:#222;">${escapeHtml(s.full_name)}</div>
+            <div style="font-size:12px;color:#722ed1;font-weight:600;letter-spacing:1px;">${escapeHtml(s.code)}</div>
+            <div style="font-size:12px;color:#888;">${escapeHtml(s.quartier)} · ${escapeHtml(s.ville || '')}</div>
+          </div>
+          <span style="font-size:11px;padding:4px 10px;border-radius:20px;font-weight:700;flex-shrink:0;
+            background:${s.is_blocked ? '#fff1f0' : '#f6ffed'};
+            color:${s.is_blocked ? '#ff4d4f' : '#52c41a'};
+            border:1px solid ${s.is_blocked ? '#ffa39e' : '#b7eb8f'};">
+            ${s.is_blocked ? 'Bloqué' : 'Actif'}
+          </span>
+        </div>
+        <div style="font-size:12px;color:#555;margin-bottom:10px;line-height:1.5;">
+          📱 ${escapeHtml(s.phone)} &nbsp;|&nbsp;
+          🏷️ ${escapeHtml(ALL_CATEGORIES[s.category] || s.category)} &nbsp;|&nbsp;
+          💳 ${escapeHtml(s.subscription_status || 'en_cours')}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <button onclick="vipListLogin('${s.code}')"
+            style="background:#722ed1;color:white;border:none;padding:9px 6px;border-radius:10px;
+                   font-size:12px;font-weight:700;cursor:pointer;">
+            🔑 Connecter
+          </button>
+          <button onclick="toggleVIPBlock('${s.id}', ${s.is_blocked}, '${type}')"
+            style="background:${s.is_blocked ? '#52c41a' : '#ff4d4f'};color:white;border:none;
+                   padding:9px 6px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;">
+            ${s.is_blocked ? '✅ Débloquer' : '🚫 Bloquer'}
+          </button>
+          <button onclick="deleteVIPAccount('${s.id}', '${escapeHtml(s.full_name)}', '${type}')"
+            style="background:#f5f5f5;color:#666;border:1px solid #ddd;padding:9px 6px;
+                   border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;">
+            🗑️ Suppr.
+          </button>
+        </div>
+      </div>
+    `).join('');
+
+  } catch(e) {
+    document.getElementById('vipAccountsList').innerHTML =
+      '<p style="text-align:center;padding:20px;color:#ff4d4f;">Erreur de chargement.</p>';
+  }
+}
+
+async function vipListLogin(code) {
+  // Ouvre la page de connexion pré-remplie avec le code
+  document.getElementById('vipSellerCode').value = code;
+  document.getElementById('vipSellerPin').value  = '';
+  document.getElementById('vipSellerLoginTitle').innerText = '🔑 Connexion compte VIP';
+  document.getElementById('vipSellerLoginBadge').innerText = '👑';
+  showPage('vipSellerLoginPage');
+}
+
+async function toggleVIPBlock(id, isBlocked, type) {
+  if (!confirm(`${isBlocked ? 'Débloquer' : 'Bloquer'} ce compte VIP ?`)) return;
+  const { error } = await db.from(TABLES.SELLERS)
+    .update({ is_blocked: !isBlocked }).eq('id', id);
+  if (error) { showToast('Erreur', 'error'); return; }
+  showToast(isBlocked ? 'Compte débloqué ✓' : 'Compte bloqué ✓', 'success');
+  openVIPList(type);
+}
+
+async function deleteVIPAccount(id, name, type) {
+  if (!confirm(`Supprimer définitivement le compte de ${name} ?`)) return;
+  await db.from(TABLES.PRODUCTS).delete().eq('seller_id', id);
+  await db.from(TABLES.PROMOS).delete().eq('seller_id', id);
+  const { error } = await db.from(TABLES.SELLERS).delete().eq('id', id);
+  if (error) { showToast('Erreur suppression', 'error'); return; }
+  showToast('Compte supprimé ✓', 'success');
+  openVIPList(type);
+}
+
+async function vipSellerLogin() {
+  const code = document.getElementById('vipSellerCode').value.trim().toUpperCase();
+  const pin  = document.getElementById('vipSellerPin').value.trim();
+
+  if (!code || !pin) { showToast('Remplissez tous les champs', 'error'); return; }
+
+  try {
+    const { data: seller, error } = await db.from(TABLES.SELLERS)
+      .select('*').eq('code', code).maybeSingle();
+
+    if (error || !seller) { showToast('Code vendeur introuvable', 'error'); return; }
+    if (!seller.account_type || !seller.account_type.startsWith('vip')) {
+      showToast('Ce compte n\'est pas un compte VIP', 'error'); return;
+    }
+    if (seller.pin_hash !== hashPin(pin)) { showToast('PIN incorrect', 'error'); return; }
+    if (seller.is_blocked) {
+      document.getElementById('blockedModal').style.display = 'flex'; return;
+    }
+
+    currentSeller = seller;
+    localStorage.setItem('seller_code', code);
+    showToast('Connexion VIP réussie ! Bienvenue ' + seller.full_name, 'success');
+    openSellerDashboard();
+
+  } catch(e) {
+    showToast('Erreur de connexion', 'error');
+  }
+}
+
+function openVIPRegisterForm(type) {
+  if (!_vipManagerConnected) { showPage('adminLoginPage'); return; }
+  _vipRegType = type;
+
+  const title = type === 'grossiste'
+    ? '🏭 Inscription Importateur & Grossiste VIP'
+    : '🛍️ Inscription Vendeur VIP';
+  document.getElementById('vipRegisterFormTitle').innerText = title;
+
+  // Remplir le select catégorie selon le type
+  const cats = type === 'grossiste' ? VIP_CATEGORIES_GROSSISTE : VIP_CATEGORIES_VENDEUR;
+  const sel  = document.getElementById('vipRegCategory');
+  sel.innerHTML = '<option value="">Choisir la catégorie *</option>';
+  Object.entries(cats).forEach(([val, label]) => {
+    const o = document.createElement('option');
+    o.value = val; o.innerText = label;
+    sel.appendChild(o);
+  });
+
+  // Vider le formulaire
+  ['vipRegFullName','vipRegPhone','vipRegQuartier','vipRegAddress','vipRegVille','vipRegDescription','vipRegPin']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  document.getElementById('vipRegResult').style.display = 'none';
+
+  showPage('vipRegisterFormPage');
+}
+
+async function submitVIPRegistration() {
+  const fullName    = document.getElementById('vipRegFullName').value.trim();
+  const phone       = document.getElementById('vipRegPhone').value.trim();
+  const quartier    = document.getElementById('vipRegQuartier').value.trim();
+  const address     = document.getElementById('vipRegAddress').value.trim();
+  const ville       = document.getElementById('vipRegVille').value.trim();
+  const category    = document.getElementById('vipRegCategory').value;
+  const description = document.getElementById('vipRegDescription').value.trim();
+  const pin         = document.getElementById('vipRegPin').value.trim();
+
+  if (!fullName || !phone || !quartier || !address || !ville || !category || !description || !pin) {
+    showToast('Remplissez tous les champs', 'error'); return;
+  }
+  if (pin.length < 4) { showToast('PIN minimum 4 chiffres', 'error'); return; }
+
+  const { data: existing } = await db.from(TABLES.SELLERS)
+    .select('id').eq('phone', phone).maybeSingle();
+  if (existing) { showToast('Ce numéro a déjà un compte', 'error'); return; }
+
+  try {
+    const { count } = await db.from(TABLES.SELLERS)
+      .select('*', { count: 'exact', head: true });
+    const sellerCode = generateSellerCode(count || 0);
+
+    const { data: created, error } = await db.from(TABLES.SELLERS).insert({
+      code:                sellerCode,
+      full_name:           fullName,
+      phone:               phone,
+      quartier:            quartier,
+      address:             address,
+      ville:               ville,
+      category:            category,
+      description:         description,
+      pin_hash:            hashPin(pin),
+      photo:               '',
+      is_blocked:          false,
+      is_active:           true,
+      position:            0,
+      dynamisme_score:     0,
+      account_type:        'vip_' + _vipRegType,
+      subscription_status: 'en_cours',
+      created_at:          new Date().toISOString()
+    }).select().single();
+
+    if (error || !created) {
+      showToast('Erreur création: ' + (error?.message || ''), 'error'); return;
+    }
+
+    // Email admin — même Edge Function (seller inséré dans sellers = trigger auto)
+    await notifyAdminEmail({ seller: created });
+
+    const resultDiv = document.getElementById('vipRegResult');
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = `
+      ✅ <strong>Compte VIP créé !</strong><br><br>
+      👤 <strong>Nom :</strong> ${escapeHtml(fullName)}<br>
+      📱 <strong>Code vendeur :</strong>
+        <span style="color:#722ed1;font-size:16px;font-weight:700;letter-spacing:2px;">${sellerCode}</span><br>
+      🔒 <strong>PIN :</strong> ${pin}<br>
+      🏷️ <strong>Type :</strong> ${_vipRegType === 'grossiste' ? 'Importateur & Grossiste VIP' : 'Vendeur VIP'}<br><br>
+      <span style="color:#ff4d4f;font-size:12px;">⚠️ Communiquez ces informations au client maintenant.</span>
+    `;
+    showToast(`Compte VIP ${sellerCode} créé ✓`, 'success');
+
+  } catch(e) {
+    showToast('Erreur: ' + e.message, 'error');
+  }
 }
 
 </script>
